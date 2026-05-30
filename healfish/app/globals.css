@@ -1,0 +1,86 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@theme inline {
+  /* Brand palette */
+  --color-brand-bg: #FAF8F5;
+  --color-brand-blue: #63B4F6;
+  --color-brand-green: #81E291;
+  --color-brand-support: #D0E8FC;
+  --color-brand-pink: #F892B6;
+  --color-brand-pink-bg: #FFF0F7;
+  --color-brand-pink-light: #FDDDE8;
+
+  /* Text opacity hierarchy (analogicznie do skali nagłówków) */
+  --color-text-title: oklch(0.12 0 0);          /* tytuł – pełna czerń */
+  --color-text-heading: oklch(0.2 0 0 / 0.88);  /* nagłówek */
+  --color-text-body: oklch(0.2 0 0 / 0.72);     /* treść */
+  --color-text-secondary: oklch(0.2 0 0 / 0.55);/* podpis / meta */
+  --color-text-muted: oklch(0.2 0 0 / 0.38);    /* nieaktywne / placeholder */
+
+  --font-sans: var(--font-sans);
+  --radius-bubble: 1.5rem;
+}
+
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+
+  /* Gradient z szaty graficznej */
+  .bg-brand-gradient {
+    background: linear-gradient(135deg, rgba(99,180,246,0.67) 0%, rgba(129,226,145,0.67) 100%);
+  }
+  .bg-brand-gradient-soft {
+    background: linear-gradient(135deg, rgba(99,180,246,0.18) 0%, rgba(129,226,145,0.22) 100%);
+  }
+  .bg-pink-gradient {
+    background: linear-gradient(135deg, rgba(248,146,182,0.22) 0%, rgba(248,146,182,0.08) 100%);
+  }
+
+  /* Tile opacity scale */
+  .tile-blue   { background: rgba(99, 180, 246, 0.67); }
+  .tile-green  { background: rgba(129, 226, 145, 0.67); }
+  .tile-green-light { background: rgba(129, 226, 145, 0.28); }  /* artykuły / quizy – jaśniejszy */
+  .tile-blend  { background: rgba(114, 203, 220, 0.67); }
+  .tile-support{ background: rgba(208, 232, 252, 0.7); }
+  .tile-pink   { background: rgba(248, 146, 182, 0.55); }
+
+  /* Subtle white-card gradient (pkt 5) */
+  .card-gradient {
+    background: linear-gradient(145deg, #ffffff 0%, #f5fbff 60%, #f0fdf5 100%);
+  }
+
+  /* Bubbly shadow */
+  .shadow-bubble { box-shadow: 0 4px 24px rgba(99,180,246,0.18), 0 1px 6px rgba(0,0,0,0.06); }
+  .shadow-bubble-hover { box-shadow: 0 8px 32px rgba(99,180,246,0.28), 0 2px 8px rgba(0,0,0,0.08); }
+}
+
+@layer base {
+  :root {
+    --background: #FAF8F5;
+    --foreground: oklch(0.145 0 0);
+    --card: #ffffff;
+    --card-foreground: oklch(0.145 0 0);
+    --popover: #ffffff;
+    --popover-foreground: oklch(0.145 0 0);
+    --primary: oklch(0.205 0 0);
+    --primary-foreground: oklch(0.985 0 0);
+    --secondary: oklch(0.97 0 0);
+    --secondary-foreground: oklch(0.205 0 0);
+    --muted: oklch(0.97 0 0);
+    --muted-foreground: oklch(0.556 0 0);
+    --accent: oklch(0.97 0 0);
+    --accent-foreground: oklch(0.205 0 0);
+    --destructive: oklch(0.577 0.245 27.325);
+    --border: oklch(0.922 0 0);
+    --input: oklch(0.922 0 0);
+    --ring: oklch(0.708 0 0);
+    --radius: 0.75rem;
+  }
+  * { border-color: var(--border); }
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans), sans-serif;
+  }
+}
