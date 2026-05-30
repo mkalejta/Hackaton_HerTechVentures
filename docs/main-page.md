@@ -2,7 +2,7 @@
 Dostęp bez logowania
 
 ### NAWIGACJA
-Logo + lista zakładek (Artykuły / Co mi jest? / Quizy / Dla kobiet) + Zaloguj/Zarejestruj
+Logo + lista zakładek (Artykuły / Self checkF / Quizy / Dla kobiet) + Zaloguj/Zarejestruj
 
 ### GŁÓWNY KOMPONENT
 Ikony firm współpracujących z nami [Luxmed, Medicover]
