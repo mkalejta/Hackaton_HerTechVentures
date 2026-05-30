@@ -116,3 +116,4 @@ Użyj realistycznych danych zastępczych:
 - Priorytet: strona główna, artykuły, self-check, quizy
 - Dla kobiet i podstrona artykułu w drugiej kolejności
 - Strona powinna wyglądać profesjonalnie i wzbudzać zaufanie (kontekst medyczny)
+- w katalogu /images masz szatę grafinczą oraz zdjęcia/logo
