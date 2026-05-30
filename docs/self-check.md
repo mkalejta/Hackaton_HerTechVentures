@@ -1,4 +1,4 @@
-## Strona Co mi jest?
+## Strona Self check
 Dostęp bez zalogowania
 
 ### Nagłówek i opis
@@ -7,4 +7,4 @@ Paragraf wyjaśniający do czego służy ta funkcjonalność
 
 ### Lista pytań
 Lista predefiniowanych pytań z polami tekstowymi do wypełnienia przez użytkownika
-Na dole przycisk "Sprawdź co mi jest"
+Na dole przycisk "Znajdź"
