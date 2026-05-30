@@ -1,0 +1,47 @@
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: healthdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d healthdb"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://user:password@postgres:5432/healthdb
+      - OPEN_ROUTER_API_KEY=${OPEN_ROUTER_API_KEY}
+      - SECRET_KEY=${SECRET_KEY:-supersecretkey_change_in_production}
+      - DATA_DIR=/app/data
+      - CHUNK_SIZE=500
+      - CHUNK_OVERLAP=50
+      - EMBEDDING_MODEL=all-MiniLM-L6-v2
+    volumes:
+      - ./data:/app/data
+      - ./scripts:/app/scripts
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  frontend:
+    build: ./healfish
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:

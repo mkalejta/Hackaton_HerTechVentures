@@ -1,5 +1,5 @@
 ---
-title: Praca siedząca: Twoje plecy nie potrzebują idealnej pozycji, tylko częstszej zmiany
+title: "Praca siedząca: Twoje plecy nie potrzebują idealnej pozycji, tylko częstszej zmiany"
 author_first_name: Tomasz
 author_last_name: Wiśniewski
 specialization: Fizjoterapia
