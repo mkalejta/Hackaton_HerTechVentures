@@ -39,7 +39,7 @@
 ## Struktura projektu
 
 ```
-project/
+hackaton_htv/
 ├── docker-compose.yml
 ├── frontend/          # Next.js
 │   └── Dockerfile

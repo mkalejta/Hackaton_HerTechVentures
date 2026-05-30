@@ -1,0 +1,163 @@
+---
+quiz_slug: quiz-cwiczenia-przewlekly-bol-plecow
+article_slug: bol-krzyz-ruch-sprzymierzeniec
+title: Ćwiczenia przy przewlekłym bólu pleców
+passing_score: 70
+points: 100
+---
+
+Pytanie 1:
+Osoba z przewlekłym bólem pleców unika ruchu, bo boi się, że każdy ból oznacza uszkodzenie kręgosłupa. Jakie podejście jest najrozsądniejsze?
+A) Leżeć jak najwięcej, aż ból całkowicie zniknie
+B) Zacząć od spokojnych, dobranych ćwiczeń i stopniowo zwiększać aktywność
+C) Ćwiczyć bardzo intensywnie, żeby „przełamać" ból
+D) Stosować wyłącznie leki przeciwbólowe
+Odpowiedź: B
+
+Pytanie 2:
+Dlaczego ćwiczenia przy bólu pleców powinny być dobrane indywidualnie?
+A) Bo każdy powinien wykonywać tylko ćwiczenia siłowe
+B) Bo ból pleców zawsze ma jedną przyczynę
+C) Bo różnią się przyczyny bólu, sprawność, wiek i tolerancja wysiłku
+D) Bo ćwiczenia działają tylko u osób młodych
+Odpowiedź: C
+
+Pytanie 3:
+Która sytuacja powinna skłonić do konsultacji ze specjalistą przed kontynuacją ćwiczeń?
+A) Lekkie zmęczenie po ruchu
+B) Uczucie rozciągania mięśni
+C) Stopniowa poprawa ruchomości
+D) Narastający ból z drętwieniem lub osłabieniem nogi
+Odpowiedź: D
+
+
+---
+quiz_slug: quiz-spacery-bol-plecow
+article_slug: spacer-po-epizodzie-bolu-plecow
+title: Spacery po epizodzie bólu pleców
+passing_score: 70
+points: 100
+---
+
+Pytanie 1:
+Dlaczego spacer może być dobrym elementem powrotu do aktywności po epizodzie bólu pleców?
+A) Bo jest prosty, łatwy do stopniowania i nie wymaga specjalnego sprzętu
+B) Bo zawsze działa lepiej niż fizjoterapia
+C) Bo im szybciej chodzimy, tym szybciej znika każdy ból
+D) Bo całkowicie eliminuje ryzyko nawrotu bólu
+Odpowiedź: A
+
+Pytanie 2:
+Która osoba najlepiej stosuje zasadę stopniowego powrotu do chodzenia?
+A) Osoba, która od razu robi bardzo długi marsz mimo bólu
+B) Osoba, która zaczyna od krótszych spacerów i obserwuje reakcję organizmu
+C) Osoba, która chodzi tylko wtedy, gdy ból jest bardzo silny
+D) Osoba, która rezygnuje z ruchu na kilka miesięcy
+Odpowiedź: B
+
+Pytanie 3:
+Które zdanie najlepiej oddaje sens artykułu?
+A) Spacer jest prostą formą ruchu, ale powinien być dopasowany do objawów
+B) Chodzenie zawsze zastępuje konsultację medyczną
+C) Spacer ma sens tylko wtedy, gdy trwa minimum godzinę
+D) Po bólu pleców najlepiej unikać chodzenia
+Odpowiedź: A
+
+
+---
+quiz_slug: quiz-cwiczenia-profilaktyka-plecy
+article_slug: cwiczenia-profilaktyka-bolu-plecow
+title: Ćwiczenia 2–3 razy w tygodniu a profilaktyka bólu pleców
+passing_score: 70
+points: 100
+---
+
+Pytanie 1:
+Dlaczego regularność ćwiczeń jest ważniejsza niż jednorazowy bardzo intensywny trening?
+A) Bo organizm lepiej adaptuje się do powtarzalnego, stopniowego bodźca
+B) Bo profilaktyka bólu pleców nie zależy od aktywności
+C) Bo jeden ciężki trening miesięcznie wystarcza
+D) Bo ćwiczenia powinno się robić tylko wtedy, gdy pojawi się ból
+Odpowiedź: A
+
+Pytanie 2:
+Który plan najlepiej pasuje do profilaktyki bólu pleców u osoby początkującej?
+A) Bardzo ciężki trening codziennie bez odpoczynku
+B) Krótkie, regularne ćwiczenia wzmacniające i ruch ogólny kilka razy w tygodniu
+C) Brak ćwiczeń, jeśli plecy aktualnie nie bolą
+D) Wyłącznie rozciąganie raz na kilka tygodni
+Odpowiedź: B
+
+Pytanie 3:
+Co jest najważniejsze przy wyborze ćwiczeń profilaktycznych?
+A) Żeby były modne w internecie
+B) Żeby zawsze były trudne
+C) Żeby były dopasowane do możliwości i wykonywane systematycznie
+D) Żeby wymagały specjalistycznego sprzętu
+Odpowiedź: C
+
+
+---
+quiz_slug: quiz-praca-siedzaca-bol-plecow
+article_slug: praca-siedzaca-zmiana-pozycji
+title: Praca siedząca a ból pleców
+passing_score: 70
+points: 100
+---
+
+Pytanie 1:
+Osoba kupiła drogi fotel ergonomiczny, ale nadal siedzi bez przerw przez 8 godzin. Co jest największym problemem?
+A) Fotel ergonomiczny zawsze jest bezużyteczny
+B) Brakuje zmiany pozycji i krótkich przerw na ruch
+C) Trzeba siedzieć jeszcze bardziej prosto
+D) Należy całkowicie zrezygnować z pracy siedzącej
+Odpowiedź: B
+
+Pytanie 2:
+Które zachowanie najlepiej zmniejsza obciążenie związane z długim siedzeniem?
+A) Utrzymywanie jednej idealnej pozycji przez cały dzień
+B) Częsta zmiana pozycji i krótkie przerwy na ruch
+C) Siedzenie wyłącznie na twardym krześle
+D) Unikanie wstawania, żeby nie przeciążać pleców
+Odpowiedź: B
+
+Pytanie 3:
+Jak najlepiej rozumieć ergonomię pracy?
+A) Jako zakup drogiego fotela
+B) Jako połączenie ustawienia stanowiska, ruchu i zmiany pozycji
+C) Jako siedzenie nieruchomo z wyprostowanymi plecami
+D) Jako sposób, który zastępuje aktywność fizyczną
+Odpowiedź: B
+
+
+---
+quiz_slug: quiz-chodzenie-kregoslup
+article_slug: ile-chodzic-dziennie-kregoslup
+title: Codzienne chodzenie a zdrowy kręgosłup
+passing_score: 70
+points: 100
+---
+
+Pytanie 1:
+Dlaczego codzienne chodzenie może mieć znaczenie nawet wtedy, gdy ktoś nie ćwiczy na siłowni?
+A) Bo zwiększa ogólną ilość ruchu i ogranicza bezruch
+B) Bo zastępuje wszystkie inne formy aktywności
+C) Bo działa tylko przy bardzo szybkim tempie
+D) Bo nie obciąża organizmu w żaden sposób
+Odpowiedź: A
+
+Pytanie 2:
+Która osoba najlepiej wprowadza chodzenie jako zdrowy nawyk?
+A) Osoba, która raz w tygodniu robi bardzo długi spacer, a poza tym prawie się nie rusza
+B) Osoba, która codziennie dodaje krótkie spacery i stopniowo zwiększa aktywność
+C) Osoba, która chodzi tylko wtedy, gdy czuje silny ból
+D) Osoba, która rezygnuje z chodzenia, bo nie ma czasu na trening
+Odpowiedź: B
+
+Pytanie 3:
+Co jest najważniejszym wnioskiem praktycznym?
+A) Liczy się tylko intensywność, nie ilość ruchu
+B) Codzienny, umiarkowany ruch może być ważnym elementem dbania o plecy
+C) Chodzenie działa wyłącznie u osób starszych
+D) Spacer ma sens tylko wtedy, gdy trwa ponad godzinę
+Odpowiedź: B

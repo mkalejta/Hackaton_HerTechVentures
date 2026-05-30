@@ -1,0 +1,14 @@
+---
+article_slug: spacer-po-epizodzie-bolu-plecow
+source_url: https://www.thelancet.com/journals/lancet/article/PIIS0140-6736(24)00755-4/fulltext
+---
+
+Pocovi et al., 2024 — WalkBack trial, The Lancet
+
+Badanie o tym, że indywidualny program chodzenia połączony z edukacją zmniejsza ryzyko nawrotu bólu pleców.
+
+Pełna nazwa badania: Effectiveness and cost-effectiveness of an individualised, progressive walking and education intervention for the prevention of low back pain recurrence in Australia (WalkBack), The Lancet, 2024.
+Link do badania: https://pubmed.ncbi.nlm.nih.gov/38908392/
+Link do pełnego tekstu The Lancet: https://www.thelancet.com/journals/lancet/article/PIIS0140-6736(24)00755-4/fulltext
+
+Badanie WalkBack sprawdzało skuteczność stopniowanego programu chodzenia połączonego z edukacją w zapobieganiu nawrotom bólu dolnego odcinka pleców u osób, które niedawno odzyskały sprawność po epizodzie bólu. Program był prowadzony przez fizjoterapeutę i polegał na stopniowym zwiększaniu dystansu spacerów oraz elementach edukacji pacjenta. Wyniki wskazują, że chodzenie jest dostępną, tanią i skuteczną formą profilaktyki nawrotów bólu kręgosłupa.
