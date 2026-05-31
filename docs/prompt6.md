@@ -12,13 +12,13 @@ Dodaj stronę `/lekarze` z listą wszystkich lekarzy. Strona powinna zawierać:
 Dodaj stronę `/znizki` dostępną tylko dla zalogowanych pacjentów. Zasady:
 - Lista kafelków z dostępnymi zniżkami na konsultacje lekarskie
 - Zniżki dotyczą wyłącznie konsultacji z lekarzami specjalizacji z bazy danych
-- Trzy progi cenowe: 500, 700 i 1000 rybek (w zależności od specjalizacji)
+- Trzy progi cenowe: 500, 700 i 1000 rybbsów (w zależności od specjalizacji)
 - Po zakupie/aktywacji zniżki wyświetl kod QR aktywny przez 20 minut (analogicznie do McDonald's)
 
 ## 3. Ograniczenia konta lekarza
 
 Konta lekarzy NIE powinny mieć dostępu do:
-- Rybek (rybbsów)
+- Rybbsów
 - Sekcji Quizów
 - Sekcji Self-check
 - Widocznych umówionych wizyt (panel wizyt pacjenta)

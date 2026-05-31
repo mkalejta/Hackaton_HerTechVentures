@@ -53,6 +53,31 @@ def run_migrations():
             cur.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS location VARCHAR(100)")
             cur.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS pwz_number VARCHAR(50)")
             cur.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS title VARCHAR(50) DEFAULT ''")
+            # Set default academic titles for imported doctors that don't have one yet
+            _spec_titles = {
+                "Endokrynologia": "dr n. med.",
+                "Stomatologia": "lek. dent.",
+                "Fizjoterapia": "mgr",
+                "Kardiologia": "dr n. med.",
+                "Ginekologia": "lek.",
+                "Dermatologia": "lek.",
+                "Neurologia": "dr n. med.",
+                "Ortopedia": "lek.",
+                "Psychiatria": "dr n. med.",
+                "Urologia": "lek.",
+                "Chirurgia": "lek.",
+                "Okulistyka": "lek.",
+                "Pediatria": "lek.",
+                "Radiologia": "lek.",
+                "Reumatologia": "dr n. med.",
+            }
+            for spec, title_val in _spec_titles.items():
+                cur.execute(
+                    """UPDATE users SET title = %s
+                       WHERE is_doctor = TRUE AND specialty = %s
+                         AND (title IS NULL OR title = '')""",
+                    (title_val, spec),
+                )
             # Legacy: keep authors.user_id to track migration progress
             cur.execute("ALTER TABLE authors ADD COLUMN IF NOT EXISTS user_id INTEGER REFERENCES users(id)")
             cur.execute("ALTER TABLE authors ADD COLUMN IF NOT EXISTS street_address TEXT")
@@ -297,6 +322,7 @@ class UpdateProfileRequest(BaseModel):
     specialty: Optional[str] = None
     street_address: Optional[str] = None
     bio: Optional[str] = None
+    title: Optional[str] = None
 
 
 class SelfCheckRequest(BaseModel):
@@ -469,6 +495,8 @@ def update_profile(body: UpdateProfileRequest, user=Depends(require_user)):
         updates["street_address"] = body.street_address
     if body.bio is not None:
         updates["bio"] = body.bio
+    if body.title is not None:
+        updates["title"] = body.title
 
     if not updates:
         return user
@@ -550,6 +578,7 @@ def list_articles(
                        a.source_url, a.quiz_slug, a.for_women,
                        LEFT(a.content, 300) AS excerpt,
                        u.first_name AS author_first_name, u.last_name AS author_last_name,
+                       COALESCE(u.title, '') AS author_title,
                        u.specialty AS author_specialization, u.location AS author_location,
                        a.user_id AS author_user_id
                 FROM articles a
@@ -577,6 +606,7 @@ def get_article(slug: str):
                        a.published_at, a.updated_at, a.source_url, a.quiz_slug, a.for_women,
                        u.id AS author_id,
                        u.first_name AS author_first_name, u.last_name AS author_last_name,
+                       COALESCE(u.title, '') AS author_title,
                        u.specialty AS author_specialization, u.location AS author_location,
                        u.id AS author_user_id
                 FROM articles a
@@ -873,7 +903,8 @@ def self_check(body: SelfCheckRequest, user=Depends(get_current_user)):
         with conn.cursor() as cur:
             cur.execute(
                 """
-                SELECT id, first_name, last_name, specialty AS specialization, location, street_address
+                SELECT id, first_name, last_name, COALESCE(title, '') AS title,
+                       specialty AS specialization, location, street_address
                 FROM users
                 WHERE is_doctor = TRUE
                   AND location IN ('Gdańsk', 'Gdynia')
@@ -902,7 +933,7 @@ def self_check(body: SelfCheckRequest, user=Depends(get_current_user)):
         "specialists": [
             {
                 "id": s["id"],
-                "name": f"{s['first_name']} {s['last_name']}",
+                "name": " ".join(p for p in [s["title"], s["first_name"], s["last_name"]] if p),
                 "specialization": s["specialization"],
                 "location": s["location"],
                 "street_address": s.get("street_address"),
@@ -992,6 +1023,39 @@ def delete_article(slug: str, user=Depends(require_user)):
     return {"status": "deleted"}
 
 
+@app.post("/discounts/{discount_id}/redeem")
+def redeem_discount(discount_id: int, user=Depends(require_user)):
+    if user.get("is_doctor"):
+        raise HTTPException(status_code=403, detail="Doctors cannot redeem discounts")
+    conn = get_conn()
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                "SELECT id, points_cost FROM discounts WHERE id = %s AND is_active = TRUE",
+                (discount_id,),
+            )
+            discount = cur.fetchone()
+            if not discount:
+                raise HTTPException(status_code=404, detail="Discount not found")
+            if user["points_total"] < discount["points_cost"]:
+                raise HTTPException(status_code=400, detail="Not enough points")
+            cur.execute(
+                "UPDATE users SET points_total = points_total - %s WHERE id = %s",
+                (discount["points_cost"], user["id"]),
+            )
+            rand = os.urandom(4).hex().upper()
+            code = f"HF-{discount_id}-{rand}"
+            cur.execute(
+                """INSERT INTO user_point_transactions (user_id, amount, reason, reference_id)
+                   VALUES (%s, %s, 'discount_redeem', %s)""",
+                (user["id"], -discount["points_cost"], discount_id),
+            )
+        conn.commit()
+    finally:
+        conn.close()
+    return {"code": code}
+
+
 @app.get("/discounts")
 def list_discounts():
     conn = get_conn()
@@ -1001,6 +1065,7 @@ def list_discounts():
                 """
                 SELECT d.id, d.description, d.points_cost, d.discount_percent, d.valid_until,
                        u.first_name AS author_first_name, u.last_name AS author_last_name,
+                       COALESCE(u.title, '') AS author_title,
                        u.specialty AS specialization, u.location
                 FROM discounts d
                 JOIN users u ON d.user_id = u.id
@@ -1094,7 +1159,8 @@ def get_doctor_profile(doctor_id: int):
     try:
         with conn.cursor() as cur:
             cur.execute(
-                """SELECT id, first_name, last_name, specialty AS specialization,
+                """SELECT id, first_name, last_name, COALESCE(title, '') AS title,
+                          specialty AS specialization,
                           location, street_address, bio
                    FROM users WHERE id = %s AND is_doctor = TRUE""",
                 (doctor_id,),
@@ -1104,7 +1170,7 @@ def get_doctor_profile(doctor_id: int):
                 raise HTTPException(status_code=404, detail="Doctor not found")
             result = {
                 "id": doctor["id"],
-                "name": f"{doctor['first_name']} {doctor['last_name']}",
+                "name": " ".join(p for p in [doctor["title"], doctor["first_name"], doctor["last_name"]] if p),
                 "specialization": doctor["specialization"],
                 "location": doctor["location"],
                 "street_address": doctor.get("street_address"),
@@ -1184,6 +1250,7 @@ def my_appointments(user=Depends(require_user)):
                           a.patient_first_name, a.patient_last_name, a.patient_phone, a.description,
                           a.created_at, a.patient_id,
                           u.first_name AS doctor_first_name, u.last_name AS doctor_last_name,
+                          COALESCE(u.title, '') AS doctor_title,
                           u.specialty AS specialization, u.id AS doctor_id
                    FROM appointments a
                    JOIN users u ON u.id = a.doctor_id
@@ -1196,7 +1263,7 @@ def my_appointments(user=Depends(require_user)):
         conn.close()
     return [
         {**fmt_appointment(r),
-         "doctor_first_name": r["doctor_first_name"],
+         "doctor_first_name": " ".join(p for p in [r["doctor_title"], r["doctor_first_name"]] if p),
          "doctor_last_name": r["doctor_last_name"],
          "specialization": r["specialization"],
          "doctor_id": r["doctor_id"]}

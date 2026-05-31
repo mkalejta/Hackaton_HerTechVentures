@@ -195,7 +195,7 @@ export default function QuizPage() {
           <div className="fixed inset-0 pointer-events-none z-50 flex items-center justify-center">
             <div className="animate-bounce bg-brand-blue text-white rounded-3xl px-8 py-5 shadow-bubble text-center">
               <p className="text-4xl font-bold">+{result.points_earned}</p>
-              <p className="text-sm mt-1 opacity-90">rybek zdobytych!</p>
+              <p className="text-sm mt-1 opacity-90">rybbsów zdobytych!</p>
             </div>
           </div>
         )}
@@ -213,7 +213,7 @@ export default function QuizPage() {
                 "font-medium mb-4 transition-all",
                 showPointsAnim ? "text-brand-blue text-xl animate-pulse" : "text-green-600"
               )}>
-                Zdobyto {result.points_earned} rybek!
+                Zdobyto {result.points_earned} rybbsów!
               </p>
             )}
             <div className="tile-green rounded-3xl p-5 mb-4 border border-white/50">

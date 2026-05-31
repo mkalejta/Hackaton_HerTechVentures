@@ -103,7 +103,7 @@ export default function ArticlesPage() {
                 <div className="flex flex-col gap-1.5 mt-auto pt-4 border-t border-gray-100">
                   <div className="flex items-center gap-2 text-xs text-[color:var(--color-text-muted)]">
                     <User size={12} />
-                    <span>{article.author_first_name} {article.author_last_name}</span>
+                    <span>{[article.author_title, article.author_first_name, article.author_last_name].filter(Boolean).join(" ")}</span>
                   </div>
                   <div className="flex items-center gap-2 text-xs text-[color:var(--color-text-muted)]">
                     <CalendarDays size={12} />

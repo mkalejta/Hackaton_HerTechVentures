@@ -121,7 +121,7 @@ export default function ForWomenPage() {
                   <p className="text-[color:var(--color-text-body)] text-sm mb-3 line-clamp-2">{article.excerpt}</p>
                   <div className="flex gap-4 text-xs text-[color:var(--color-text-muted)] mt-auto pt-3 border-t border-pink-100">
                     <span className="flex items-center gap-1">
-                      <User size={11} /> {article.author_first_name} {article.author_last_name}
+                      <User size={11} /> {[article.author_title, article.author_first_name, article.author_last_name].filter(Boolean).join(" ")}
                     </span>
                     <span className="flex items-center gap-1">
                       <CalendarDays size={11} /> {new Date(article.published_at).toLocaleDateString("pl-PL")}

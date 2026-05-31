@@ -22,11 +22,36 @@ const TIER_BADGE: Record<number, string> = {
   1000: "bg-amber-100 text-amber-700 border-amber-200",
 };
 
+const STORAGE_KEY = "hf_active_discount";
+
 type ActiveDiscount = {
   discount: ApiDiscount;
   code: string;
   expiresAt: number;
 };
+
+function saveActive(a: ActiveDiscount) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(a));
+}
+
+function loadActive(): ActiveDiscount | null {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const parsed: ActiveDiscount = JSON.parse(raw);
+    if (parsed.expiresAt <= Date.now()) {
+      localStorage.removeItem(STORAGE_KEY);
+      return null;
+    }
+    return parsed;
+  } catch {
+    return null;
+  }
+}
+
+function clearActive() {
+  localStorage.removeItem(STORAGE_KEY);
+}
 
 function CountdownTimer({ expiresAt, onExpired }: { expiresAt: number; onExpired: () => void }) {
   const [remaining, setRemaining] = useState(Math.max(0, expiresAt - Date.now()));
@@ -53,11 +78,6 @@ function CountdownTimer({ expiresAt, onExpired }: { expiresAt: number; onExpired
   );
 }
 
-function generateCode(discountId: number): string {
-  const rand = Math.random().toString(36).slice(2, 10).toUpperCase();
-  return `HF-${discountId}-${rand}`;
-}
-
 function getTierKey(cost: number): number {
   if (cost <= 500) return 500;
   if (cost <= 700) return 700;
@@ -76,6 +96,13 @@ export default function ZnizkiPage() {
   useEffect(() => {
     api.getDiscounts().then(setDiscounts).finally(() => setLoadingDiscounts(false));
   }, []);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      const saved = loadActive();
+      if (saved) setActive(saved);
+    }
+  }, [isLoggedIn]);
 
   if (loading) return null;
 
@@ -112,14 +139,19 @@ export default function ZnizkiPage() {
   const handleActivate = async (discount: ApiDiscount) => {
     if (!user) return;
     if (user.points_total < discount.points_cost) {
-      setError(`Potrzebujesz ${discount.points_cost} rybek. Masz tylko ${user.points_total}.`);
+      setError(`Potrzebujesz ${discount.points_cost} rybbsów. Masz tylko ${user.points_total}.`);
       return;
     }
     setError(null);
     setActivating(discount.id);
     try {
-      const code = generateCode(discount.id);
-      setActive({ discount, code, expiresAt: Date.now() + 20 * 60 * 1000 });
+      const { code } = await api.redeemDiscount(discount.id);
+      await refreshUser();
+      const newActive: ActiveDiscount = { discount, code, expiresAt: Date.now() + 20 * 60 * 1000 };
+      saveActive(newActive);
+      setActive(newActive);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Błąd aktywacji zniżki");
     } finally {
       setActivating(null);
     }
@@ -142,7 +174,7 @@ export default function ZnizkiPage() {
 
           <div className="flex justify-center mb-4">
             <div className="p-3 bg-white border border-gray-200 rounded-2xl shadow-sm">
-              <QRCodeSVG value={active.code} size={200} />
+              <QRCodeSVG value="https://www.youtube.com/watch?v=dQw4w9WgXcQ" size={200} />
             </div>
           </div>
 
@@ -155,14 +187,14 @@ export default function ZnizkiPage() {
             Ważny przez:{" "}
             <CountdownTimer
               expiresAt={active.expiresAt}
-              onExpired={() => setActive(null)}
+              onExpired={() => { clearActive(); setActive(null); }}
             />
           </div>
 
           <Button
             variant="outline"
             className="rounded-full w-full"
-            onClick={() => setActive(null)}
+            onClick={() => { clearActive(); setActive(null); }}
           >
             Wróć do zniżek
           </Button>
@@ -220,7 +252,7 @@ export default function ZnizkiPage() {
                     TIER_BADGE[tier] ?? "bg-gray-100 text-gray-700 border-gray-200"
                   )}>
                     <Image src="/images/rybbs.png" alt="rybki" width={32} height={14} className="h-3.5 w-auto" />
-                    {d.points_cost} rybek
+                    {d.points_cost} rybbsów
                   </span>
                   <div className="flex items-center gap-1 text-2xl font-bold text-[var(--color-text-title)]">
                     <Tag size={18} />
@@ -232,7 +264,7 @@ export default function ZnizkiPage() {
                   <p className="font-semibold text-[var(--color-text-heading)] mb-1">{d.description}</p>
                   <div className="flex items-center gap-1.5 text-sm text-[color:var(--color-text-secondary)] mt-1">
                     <Stethoscope size={13} />
-                    {d.author_first_name} {d.author_last_name} · {d.specialization}
+                    {[d.author_title, d.author_first_name, d.author_last_name].filter(Boolean).join(" ")} · {d.specialization}
                   </div>
                   <div className="flex items-center gap-1.5 text-xs text-[color:var(--color-text-muted)] mt-1">
                     <MapPin size={11} />
@@ -259,7 +291,7 @@ export default function ZnizkiPage() {
                     ? "Aktywowanie..."
                     : canAfford
                     ? "Aktywuj zniżkę"
-                    : `Brakuje ${d.points_cost - (user?.points_total ?? 0)} rybek`}
+                    : `Brakuje ${d.points_cost - (user?.points_total ?? 0)} rybbsów`}
                 </Button>
               </div>
             );

@@ -125,7 +125,7 @@ export type ApiArticle = {
   id: number; slug: string; title: string; specialization: string;
   published_at: string; source_url: string | null; quiz_slug: string | null;
   for_women: boolean; excerpt: string;
-  author_first_name: string; author_last_name: string;
+  author_first_name: string; author_last_name: string; author_title: string;
   author_specialization: string; author_location: string; znany_lekarz_url: string | null;
   author_user_id: number | null;
 };
@@ -176,6 +176,7 @@ export type ApiDiscount = {
   valid_until: string | null;
   author_first_name: string;
   author_last_name: string;
+  author_title: string;
   specialization: string;
   location: string;
 };

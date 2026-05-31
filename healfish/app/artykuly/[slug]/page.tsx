@@ -84,7 +84,7 @@ export default function ArticlePage() {
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-10">
         <div className="tile-green rounded-3xl p-5 mb-8 flex items-center justify-between flex-wrap gap-4 border border-white/50 shadow-bubble">
           <div>
-            <p className="font-semibold text-[var(--color-text-heading)]">{article.author_first_name} {article.author_last_name}</p>
+            <p className="font-semibold text-[var(--color-text-heading)]">{[article.author_title, article.author_first_name, article.author_last_name].filter(Boolean).join(" ")}</p>
             <p className="text-sm text-[color:var(--color-text-body)]">{article.author_specialization}</p>
             <div className="flex items-center gap-1 text-xs text-[color:var(--color-text-secondary)] mt-1">
               <MapPin size={11} />
@@ -158,7 +158,7 @@ export default function ArticlePage() {
         <div className="bg-brand-gradient-soft rounded-3xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4 border border-brand-blue/10 shadow-bubble">
           <div>
             <p className="font-semibold text-[var(--color-text-heading)]">
-              Chcesz skonsultować się z {article.author_first_name} {article.author_last_name}?
+              Chcesz skonsultować się z {[article.author_title, article.author_first_name, article.author_last_name].filter(Boolean).join(" ")}?
             </p>
             <p className="text-sm text-[color:var(--color-text-secondary)]">
               {article.author_user_id ? "Umów wizytę online – wybierz termin" : "Sprawdź profil lekarza"}

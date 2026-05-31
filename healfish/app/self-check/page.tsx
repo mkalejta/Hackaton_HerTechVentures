@@ -56,27 +56,47 @@ function saveState(state: SavedState) {
 }
 
 function isScaleQuestion(fullLabel: string): boolean {
-  return fullLabel.toLowerCase().includes("skala");
+  return fullLabel.toLowerCase().includes("skal");
 }
 
 function ScaleInput({ value, onChange }: { value: string; onChange: (v: string) => void }) {
   const selected = value ? parseInt(value, 10) : null;
+  const pct = selected ? ((selected - 1) / 9) * 100 : 0;
+
   return (
-    <div className="flex flex-wrap gap-1.5 mt-1">
-      {Array.from({ length: 10 }, (_, i) => i + 1).map((n) => (
-        <button
-          key={n}
-          type="button"
-          onClick={() => onChange(String(n))}
-          className={`w-9 h-9 rounded-xl text-sm font-semibold transition-all ${
-            selected === n
+    <div className="mt-2 px-1">
+      <div className="flex items-center gap-3 mb-2">
+        <span className="text-xs text-[color:var(--color-text-muted)] w-4">1</span>
+        <div className="relative flex-1">
+          <input
+            type="range"
+            min={1}
+            max={10}
+            step={1}
+            value={selected ?? 5}
+            onChange={(e) => onChange(e.target.value)}
+            className="w-full h-2 rounded-full appearance-none cursor-pointer"
+            style={{
+              background: selected
+                ? `linear-gradient(to right, var(--color-brand-blue, #3b82f6) 0%, var(--color-brand-blue, #3b82f6) ${pct}%, #e5e7eb ${pct}%, #e5e7eb 100%)`
+                : "#e5e7eb",
+            }}
+          />
+        </div>
+        <span className="text-xs text-[color:var(--color-text-muted)] w-4 text-right">10</span>
+        <span
+          className={`min-w-[2.25rem] h-9 rounded-xl text-sm font-bold flex items-center justify-center transition-all ${
+            selected
               ? "bg-brand-blue text-white shadow-bubble"
-              : "bg-white border border-gray-200 text-[color:var(--color-text-body)] hover:border-brand-blue hover:text-brand-blue"
+              : "bg-gray-100 text-[color:var(--color-text-muted)]"
           }`}
         >
-          {n}
-        </button>
-      ))}
+          {selected ?? "–"}
+        </span>
+      </div>
+      {!selected && (
+        <p className="text-xs text-[color:var(--color-text-muted)]">Przesuń suwak, żeby wybrać wartość</p>
+      )}
     </div>
   );
 }
