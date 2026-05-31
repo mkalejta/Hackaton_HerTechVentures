@@ -536,11 +536,13 @@ def ensure_manual_data(conn) -> None:
     with conn.cursor() as cur:
         # Link articles to their quizzes
         quiz_links = [
-            ("quiz-cwiczenia-przewlekly-bol-plecow", "bol-krzyz-ruch-sprzymierzeniec"),
-            ("quiz-spacery-bol-plecow",               "spacer-po-epizodzie-bolu-plecow"),
-            ("quiz-cwiczenia-profilaktyka-plecy",      "cwiczenia-profilaktyka-bolu-plecow"),
-            ("quiz-chodzenie-kregoslup",               "ile-chodzic-dziennie-kregoslup"),
-            ("quiz-praca-siedzaca-bol-plecow",         "praca-siedzaca-zmiana-pozycji"),
+            ("quiz-cwiczenia-przewlekly-bol-plecow",       "bol-krzyz-ruch-sprzymierzeniec"),
+            ("quiz-spacery-bol-plecow",                    "spacer-po-epizodzie-bolu-plecow"),
+            ("quiz-cwiczenia-profilaktyka-plecy",           "cwiczenia-profilaktyka-bolu-plecow"),
+            ("quiz-chodzenie-kregoslup",                    "ile-chodzic-dziennie-kregoslup"),
+            ("quiz-praca-siedzaca-bol-plecow",              "praca-siedzaca-zmiana-pozycji"),
+            ("quiz-nierownosci-plci-badania-medyczne",      "nierownosci-plci-badania-medyczne"),
+            ("quiz-wplyw-plci-farmakokinetyka",             "wplyw-plci-farmakokinetyka"),
         ]
         for quiz_slug, article_slug in quiz_links:
             cur.execute(

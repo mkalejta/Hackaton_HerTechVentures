@@ -2,22 +2,15 @@
 
 import { createContext, useCallback, useContext, useEffect, useState } from "react";
 import { auth } from "@/lib/auth";
-import { api } from "@/lib/api";
-
-type AuthUser = {
-  id: number;
-  first_name: string;
-  last_name: string;
-  email: string;
-  points_total: number;
-};
+import { api, ApiUser } from "@/lib/api";
 
 type AuthContextValue = {
-  user: AuthUser | null;
+  user: ApiUser | null;
   isLoggedIn: boolean;
   loading: boolean;
   login: (token: string) => Promise<void>;
   logout: () => void;
+  refreshUser: () => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextValue>({
@@ -26,10 +19,11 @@ const AuthContext = createContext<AuthContextValue>({
   loading: true,
   login: async () => {},
   logout: () => {},
+  refreshUser: async () => {},
 });
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<AuthUser | null>(null);
+  const [user, setUser] = useState<ApiUser | null>(null);
   const [loading, setLoading] = useState(true);
 
   const fetchUser = useCallback(async () => {
@@ -60,8 +54,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setUser(null);
   }, []);
 
+  const refreshUser = useCallback(async () => {
+    if (auth.isLoggedIn()) {
+      await fetchUser();
+    }
+  }, [fetchUser]);
+
   return (
-    <AuthContext.Provider value={{ user, isLoggedIn: !!user, loading, login, logout }}>
+    <AuthContext.Provider value={{ user, isLoggedIn: !!user, loading, login, logout, refreshUser }}>
       {children}
     </AuthContext.Provider>
   );

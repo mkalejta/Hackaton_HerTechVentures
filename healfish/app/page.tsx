@@ -1,9 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
 import { buttonVariants } from "@/components/ui/button";
-import { Button } from "@/components/ui/button";
 import SpecialistCarousel from "@/components/SpecialistCarousel";
-import { BookOpen, ClipboardCheck, Brain, Heart } from "lucide-react";
+import HomeCTA from "@/components/HomeCTA";
+import { BookOpen, ClipboardCheck, Brain, Heart, Zap, Gift, ShieldCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const partners = [
@@ -65,36 +65,69 @@ export default function HomePage() {
           style={{ background: "radial-gradient(circle, #81E291 0%, #63B4F6 100%)" }}
         />
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 flex flex-col md:flex-row items-center gap-10">
-          <div className="flex-1 text-center md:text-left">
-            {/* Partner loga – widoczne na desktop nad nagłówkiem */}
-            <div className="hidden md:flex items-center justify-start gap-3 mb-6 flex-wrap">
-              <span className="text-xs font-semibold text-brand-blue">Partnerzy:</span>
-              {partners.map((p) => (
-                <div key={p.name} className="bg-white/80 border border-gray-100 rounded-xl px-2 py-1 shadow-sm">
-                  <Image src={p.src} alt={p.name} width={72} height={24} className="h-6 w-auto object-contain" />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20 flex flex-col md:flex-row items-center gap-8 md:gap-12">
+
+          {/* LEFT: copy */}
+          <div className="flex-1 w-full text-center md:text-left">
+
+            {/* Badge */}
+            <div className="inline-flex items-center gap-2 bg-brand-blue/10 border border-brand-blue/20 text-brand-blue text-xs font-semibold px-4 py-1.5 rounded-full mb-5">
+              <ShieldCheck size={13} />
+              Darmowa aplikacja profilaktyczna
+            </div>
+
+            {/* Headline */}
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[var(--color-text-title)] leading-tight tracking-tight mb-4">
+              Zmień zdrowotne{" "}
+              <span className="text-brand-blue">„chyba"</span>
+              {" "}na pewność!
+            </h1>
+
+            {/* Lead */}
+            <p className="text-[color:var(--color-text-body)] text-base sm:text-lg leading-relaxed max-w-xl mx-auto md:mx-0 mb-6">
+              Zbyt często odkładamy zdrowie na później. Healfish udowadnia, że profilaktyka
+              nie musi być nudna — <strong>edukujemy, motywujemy i nagradzamy</strong> Cię
+              za codzienne dbanie o siebie.
+            </p>
+
+            {/* Feature chips */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-7 max-w-xl mx-auto md:mx-0">
+              <div className="flex items-start gap-3 bg-white/70 border border-brand-blue/15 rounded-2xl px-4 py-3 shadow-sm">
+                <div className="w-8 h-8 rounded-xl bg-brand-blue/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <Zap size={15} className="text-brand-blue" />
                 </div>
-              ))}
+                <div className="text-left">
+                  <p className="text-xs font-bold text-[var(--color-text-heading)] mb-0.5">Szybkie quizy</p>
+                  <p className="text-xs text-[color:var(--color-text-muted)] leading-snug">Wiedza o zdrowiu w kilka minut dziennie</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3 bg-white/70 border border-green-200/60 rounded-2xl px-4 py-3 shadow-sm">
+                <div className="w-8 h-8 rounded-xl bg-green-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <Gift size={15} className="text-green-600" />
+                </div>
+                <div className="text-left">
+                  <p className="text-xs font-bold text-[var(--color-text-heading)] mb-0.5">Realne nagrody</p>
+                  <p className="text-xs text-[color:var(--color-text-muted)] leading-snug">Punkty za zniżki na badania i kosmetyki</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3 bg-white/70 border border-purple-200/60 rounded-2xl px-4 py-3 shadow-sm">
+                <div className="w-8 h-8 rounded-xl bg-purple-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <ShieldCheck size={15} className="text-purple-500" />
+                </div>
+                <div className="text-left">
+                  <p className="text-xs font-bold text-[var(--color-text-heading)] mb-0.5">Koniec z mitami</p>
+                  <p className="text-xs text-[color:var(--color-text-muted)] leading-snug">Ryba Hybba odróżnia fakty od bzdur</p>
+                </div>
+              </div>
             </div>
 
-            {/* Headline in a soft frame */}
-            <div className="bg-white/60 border border-gray-200/70 rounded-3xl px-6 py-6 mb-6 shadow-bubble backdrop-blur-sm">
-              <h1 className="text-4xl md:text-5xl font-bold text-[var(--color-text-title)] leading-tight mb-3">
-                Zadbaj o siebie{" "}
-                <span className="text-brand-blue">zanim będziesz musiał</span>
-              </h1>
-              <p className="text-[color:var(--color-text-body)] text-lg max-w-lg">
-                Rzetelne artykuły od lekarzy, quizy profilaktyczne i narzędzia do self-check.
-                Zdobywaj punkty i wymieniaj je na rabaty na badania.
-              </p>
-            </div>
-
-            <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
+            {/* CTA buttons */}
+            <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start mb-6">
               <Link
                 href="/rejestracja"
                 className={cn(
                   buttonVariants({ size: "lg" }),
-                  "bg-brand-blue hover:bg-blue-400 text-white rounded-full px-8 shadow-bubble"
+                  "bg-brand-blue hover:bg-blue-400 text-white rounded-full px-8 shadow-bubble text-base"
                 )}
               >
                 Zacznij teraz – to darmowe
@@ -103,32 +136,49 @@ export default function HomePage() {
                 href="/artykuly"
                 className={cn(
                   buttonVariants({ variant: "outline", size: "lg" }),
-                  "rounded-full px-8 bg-white/70"
+                  "rounded-full px-8 bg-white/70 text-base"
                 )}
               >
                 Przeglądaj artykuły
               </Link>
             </div>
+
+            {/* Tagline */}
+            <p className="text-xs text-[color:var(--color-text-muted)] italic max-w-md mx-auto md:mx-0">
+              Przestań zgadywać i poczuj się we własnym ciele jak ryba w wodzie.
+            </p>
           </div>
 
-          {/* Fish + partner loga pod rybką na mobile */}
-          <div className="flex-shrink-0 flex flex-col items-center gap-4">
+          {/* RIGHT: mascot + partners */}
+          <div className="flex-shrink-0 flex flex-col items-center gap-5">
             <Image
               src="/images/ujecia-ryby-hybby/ujecie2.png"
               alt="Hybba mascot"
               width={300}
               height={300}
-              className="w-52 md:w-72 drop-shadow-2xl animate-bounce"
+              className="w-44 sm:w-56 md:w-72 drop-shadow-2xl animate-bounce"
               style={{ animationDuration: "3s" }}
             />
 
-            {/* Partner loga – widoczne TYLKO na mobile, pod rybką */}
-            <div className="flex md:hidden flex-col items-center gap-3 w-full">
-              <span className="text-xs font-semibold text-brand-blue">Partnerzy:</span>
-              <div className="grid grid-cols-3 gap-3 w-full max-w-xs">
+            {/* Partners – desktop */}
+            <div className="hidden md:flex flex-col items-center gap-2 w-full">
+              <span className="text-xs font-semibold text-[color:var(--color-text-muted)] uppercase tracking-wide">Partnerzy</span>
+              <div className="flex flex-wrap justify-center gap-2">
                 {partners.map((p) => (
-                  <div key={p.name} className="bg-white/80 border border-gray-100 rounded-2xl px-3 py-3 shadow-sm flex items-center justify-center">
-                    <Image src={p.src} alt={p.name} width={90} height={32} className="h-8 w-auto object-contain" />
+                  <div key={p.name} className="bg-white/80 border border-gray-100 rounded-xl px-2 py-1 shadow-sm">
+                    <Image src={p.src} alt={p.name} width={72} height={24} className="h-5 w-auto object-contain" />
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Partners – mobile */}
+            <div className="flex md:hidden flex-col items-center gap-2 w-full">
+              <span className="text-xs font-semibold text-[color:var(--color-text-muted)] uppercase tracking-wide">Partnerzy</span>
+              <div className="grid grid-cols-3 gap-2 w-full max-w-xs">
+                {partners.map((p) => (
+                  <div key={p.name} className="bg-white/80 border border-gray-100 rounded-2xl px-2 py-2 shadow-sm flex items-center justify-center">
+                    <Image src={p.src} alt={p.name} width={80} height={28} className="h-6 w-auto object-contain" />
                   </div>
                 ))}
               </div>
@@ -176,60 +226,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* CTA + Newsletter */}
-      <section className="py-16 bg-brand-gradient-soft">
-        <div className="max-w-xl mx-auto px-4 text-center">
-          {/* Frame around CTA text */}
-          <div className="bg-white/70 border border-brand-blue/20 rounded-3xl px-8 py-8 shadow-bubble mb-6">
-            <h2 className="text-2xl font-bold text-[var(--color-text-title)] mb-3">
-              Dołącz do tysięcy świadomych pacjentów
-            </h2>
-            <p className="text-[color:var(--color-text-body)] mb-6">
-              Zarejestruj się i uzyskaj dostęp do quizów, rabatów u partnerów i personalizowanych artykułów.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Link
-                href="/rejestracja"
-                className={cn(
-                  buttonVariants({ size: "lg" }),
-                  "bg-brand-blue hover:bg-blue-400 text-white rounded-full px-8 shadow-bubble"
-                )}
-              >
-                Zarejestruj się
-              </Link>
-              <Link
-                href="/logowanie"
-                className={cn(
-                  buttonVariants({ variant: "outline", size: "lg" }),
-                  "rounded-full px-8 bg-white"
-                )}
-              >
-                Zaloguj się
-              </Link>
-            </div>
-          </div>
-
-          {/* Newsletter */}
-          <div className="bg-white/60 border border-gray-200 rounded-3xl px-6 py-5 shadow-sm">
-            <p className="text-sm text-[color:var(--color-text-secondary)] mb-3">
-              Lub zapisz się do newslettera
-            </p>
-            <form className="flex gap-2">
-              <input
-                type="email"
-                placeholder="Twój adres email"
-                className="flex-1 px-4 py-2.5 rounded-full border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue"
-              />
-              <Button
-                type="submit"
-                className="bg-brand-blue hover:bg-blue-400 text-white rounded-full px-5"
-              >
-                Zapisz
-              </Button>
-            </form>
-          </div>
-        </div>
-      </section>
+      {/* CTA + Newsletter – hidden when logged in */}
+      <HomeCTA />
     </>
   );
 }

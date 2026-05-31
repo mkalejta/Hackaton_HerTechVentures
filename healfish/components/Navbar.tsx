@@ -8,10 +8,18 @@ import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/lib/auth-context";
 
-const navLinks = [
+const patientLinks = [
   { href: "/artykuly", label: "Artykuły" },
   { href: "/self-check", label: "Self check" },
   { href: "/quizy", label: "Quizy" },
+  { href: "/lekarze", label: "Lekarze" },
+  { href: "/znizki", label: "Zniżki" },
+  { href: "/dla-kobiet", label: "Dla kobiet", pink: true },
+];
+
+const doctorLinks = [
+  { href: "/artykuly", label: "Artykuły" },
+  { href: "/lekarze", label: "Lekarze" },
   { href: "/dla-kobiet", label: "Dla kobiet", pink: true },
 ];
 
@@ -24,6 +32,7 @@ export default function Navbar() {
   const handleLogout = () => { logout(); router.push("/"); };
 
   const isWomen = pathname.startsWith("/dla-kobiet");
+  const navLinks = (isLoggedIn && user?.is_doctor) ? doctorLinks : patientLinks;
 
   const gradient = isWomen
     ? "linear-gradient(135deg, #F892B6 0%, #ffffff 100%)"
@@ -96,13 +105,57 @@ export default function Navbar() {
           <div className="hidden md:flex items-center gap-2">
             {isLoggedIn ? (
               <>
-                <span className={cn(
-                  "flex items-center gap-1.5 px-3 py-1.5 rounded-full font-semibold text-sm",
-                  isWomen ? "text-gray-700" : "text-white"
-                )}>
-                  {user?.points_total ?? 0}
-                  <Image src="/images/rybbs.png" alt="rybbs" width={48} height={20} className="h-5 w-auto" />
-                </span>
+                {!user?.is_doctor && (
+                  <span className={cn(
+                    "flex items-center gap-1.5 px-3 py-1.5 rounded-full font-semibold text-sm",
+                    isWomen ? "text-gray-700" : "text-white"
+                  )}>
+                    {user?.points_total ?? 0}
+                    <Image src="/images/rybbs.png" alt="rybbs" width={48} height={20} className="h-5 w-auto" />
+                  </span>
+                )}
+                {user?.is_doctor ? (
+                  <Link
+                    href="/panel-lekarza"
+                    className={cn(
+                      "text-sm font-medium px-4 py-2 rounded-full transition-colors",
+                      pathname.startsWith("/panel-lekarza")
+                        ? "bg-white shadow-sm " + (isWomen ? "text-brand-pink" : "text-brand-blue")
+                        : isWomen
+                        ? "text-gray-700 hover:bg-pink-100/50"
+                        : "text-white/90 hover:text-white hover:bg-white/20"
+                    )}
+                  >
+                    Panel
+                  </Link>
+                ) : (
+                  <Link
+                    href="/wizyty"
+                    className={cn(
+                      "text-sm font-medium px-4 py-2 rounded-full transition-colors",
+                      pathname.startsWith("/wizyty")
+                        ? "bg-white shadow-sm " + (isWomen ? "text-brand-pink" : "text-brand-blue")
+                        : isWomen
+                        ? "text-gray-700 hover:bg-pink-100/50"
+                        : "text-white/90 hover:text-white hover:bg-white/20"
+                    )}
+                  >
+                    Wizyty
+                  </Link>
+                )}
+                <Link
+                  href="/profil"
+                  className={cn(
+                    "text-sm font-medium px-4 py-2 rounded-full transition-colors",
+                    pathname.startsWith("/profil")
+                      ? "bg-white shadow-sm " + (isWomen ? "text-brand-pink" : "text-brand-blue")
+                      : isWomen
+                      ? "text-gray-700 hover:bg-pink-100/50"
+                      : "text-white/90 hover:text-white hover:bg-white/20"
+                  )}
+                >
+                  Profil
+                </Link>
                 <button
                   onClick={handleLogout}
                   className={cn(
@@ -190,10 +243,33 @@ export default function Navbar() {
           <div className="flex flex-col gap-2 pt-2 border-t border-white/20">
             {isLoggedIn ? (
               <>
-                <p className={cn("text-sm font-semibold px-4 py-2 flex items-center gap-1.5", isWomen ? "text-gray-700" : "text-white/90")}>
-                  {user?.points_total ?? 0}
-                  <Image src="/images/rybbs.png" alt="rybbs" width={48} height={20} className="h-5 w-auto" />
-                </p>
+                {!user?.is_doctor && (
+                  <p className={cn("text-sm font-semibold px-4 py-2 flex items-center gap-1.5", isWomen ? "text-gray-700" : "text-white/90")}>
+                    {user?.points_total ?? 0}
+                    <Image src="/images/rybbs.png" alt="rybbs" width={48} height={20} className="h-5 w-auto" />
+                  </p>
+                )}
+                {user?.is_doctor ? (
+                  <Link href="/panel-lekarza" onClick={() => setMobileOpen(false)}
+                    className={cn("text-sm font-medium py-2.5 px-4 rounded-full transition-colors", isWomen ? "text-gray-700 hover:bg-pink-100/50" : "text-white hover:bg-white/20")}>
+                    Panel lekarza
+                  </Link>
+                ) : (
+                  <Link href="/wizyty" onClick={() => setMobileOpen(false)}
+                    className={cn("text-sm font-medium py-2.5 px-4 rounded-full transition-colors", isWomen ? "text-gray-700 hover:bg-pink-100/50" : "text-white hover:bg-white/20")}>
+                    Moje wizyty
+                  </Link>
+                )}
+                <Link
+                  href="/profil"
+                  onClick={() => setMobileOpen(false)}
+                  className={cn(
+                    "text-sm font-medium py-2.5 px-4 rounded-full transition-colors",
+                    isWomen ? "text-gray-700 hover:bg-pink-100/50" : "text-white hover:bg-white/20"
+                  )}
+                >
+                  Profil
+                </Link>
                 <button
                   onClick={() => { setMobileOpen(false); handleLogout(); }}
                   className={cn(

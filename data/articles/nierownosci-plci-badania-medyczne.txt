@@ -1,0 +1,91 @@
+---
+title: Nierówności płci w dziedzinie badań medycznych, rozwoju leków i dostępie do opieki
+author_first_name: Katarzyna
+author_last_name: Wiśniewska
+specialization: Ginekologia
+published_at: 2025-03-01
+source_url: https://www.europarl.europa.eu/RegData/etudes/STUD/2025/778519/IUST_STU(2025)778519_EN.pdf
+quiz_slug: quiz-nierownosci-plci-badania-medyczne
+for_women: true
+znany_lekarz_url:
+location: Gdańsk
+---
+
+Nierówności płci w dziedzinie badań medycznych, rozwoju leków i dostępie do opieki
+
+
+
+Kontekst
+
+Zarówno mężczyźni, jak i kobiety są narażeni na zagrożenia dla zdrowia i na choroby, które wynikają z płci biologicznej i tożsamości płciowej. Kompleksowe zrozumienie tych czynników jest zatem niezbędne, aby stawiać trafne diagnozy i zapewnić skuteczne leczenia.
+
+
+W przeszłości kobiety systematycznie wyłączano z wielu badań klinicznych, a wyniki uzyskane głównie na podstawie kohort mężczyzn często uogólniano na kobiety i osoby interseksualne, pomimo znacznych różnic anatomicznych i fizjologicznych. Ten brak włączenia spowodował poważne luki w naszej wiedzy na temat tego, jak poszczególne metody leczenia wpływają na kobiety. Zwiększa to ryzyko wystąpienia działań niepożądanych i ogranicza skuteczność interwencji medycznych dostosowanych do potrzeb kobiet. Ponadto kobiety napotykają większe bariery w dostępie do diagnostyki medycznej i leczenia, w tym wyzwania związane z przystępnością cenową i dostępnością opieki zdrowotnej.
+
+
+Cel badania
+
+W badaniu – zleconym przez Departament Tematyczny ds. Obywateli, Równości i Kultury Parlamentu Europejskiego na wniosek Komisji Praw Kobiet i Równouprawnienia – przeanalizowano, jak zróżnicowanie w opiece zdrowotnej ze względu na płeć – ze szczególnym uwzględnieniem nierówności płci w badaniach medycznych, rozwoju leków i dostępie do opieki zdrowotnej – wpływa na zdrowie i samopoczucie kobiet. W badaniu wskazano na fragmentaryczność działań politycznych i przedstawiono konkretne zalecenia dotyczące polityki istotne dla procesu decyzyjnego UE. Podkreślono potrzebę podejścia intersekcjonalnego i odniesiono się do istniejących w UE barier zdrowotnych związanych z płcią.
+
+
+Najważniejsze ustalenia
+
+W badaniu wykazano, że strukturalne różnice w traktowaniu kobiet i mężczyzn w badaniach medycznych, rozwoju leków i dostępie do usług opieki zdrowotnej bezpośrednio i kumulatywnie pogarszają zdrowie kobiet w UE.
+
+- Istnieje wiele przyczyn zróżnicowania w opiece zdrowotnej ze względu na płeć: ograniczone zrozumienie różnic biologicznych wynikających z płci, brak dostępności danych zdezagregowanych według płci oraz bariery w dostępie do opieki zdrowotnej.
+
+- W przeszłości zdecydowanie zbyt mało badań poświęcano zdrowiu kobiet. Przez dziesięciolecia w badaniach medycznych ignorowano różnice między kobietami a mężczyznami pod względem etiologii i objawów klinicznych, a do uzyskania informacji na temat chorób, skuteczności leków i wyrobów medycznych wykorzystywano badania głównie z udziałem mężczyzn. Ustalenia te często stosowano w odniesieniu do kobiet bez przeprowadzenia wystarczających badań i bez uwzględnienia faktu, że nie jest ani trafne, ani właściwe zakładanie, że terapie badane głównie u mężczyzn będą działały tak samo u kobiet.
+
+- Wyniki badań klinicznych pochodzące głównie z populacji mężczyzn niewłaściwie ekstrapolowano na kobiety i osoby interseksualne pomimo ich odrębnych cech anatomicznych i fizjologicznych. Ten brak włączenia powoduje poważne luki w naszej wiedzy na temat tego, jak poszczególne metody leczenia wpływają na kobiety, i zmniejszają ich skuteczność.
+
+- Kobiety borykają się ze specyficznymi wyzwaniami w zakresie dostępności i przystępności cenowej leczenia, w tym ze spóźnionymi diagnozami bądź nieodpowiednim, a nawet szkodliwym leczeniem.
+
+- Wiedza na temat patogenezy i fizjologii chorób u kobiet pozostaje ograniczona; brakuje też systematycznego zbierania danych danych zdezagregowanych według płci biologicznej i płci społeczno-kulturowej. Niezrozumienie potrzeb zdrowotnych kobiet stwarza przeszkody w diagnozowaniu i leczeniu chorób układu krążenia, nowotworów, osteoporozy, chorób autoimmunologicznych itp. oraz chorób i schorzeń kobiecych.
+
+
+Główne zalecenia
+
+1. Zalecenia dotyczące gromadzenia danych i badań klinicznych
+
+Należy dopilnować, aby w sprawozdaniach z badań klinicznych systematycznie uwzględniano płeć biologiczną, płeć społeczną i inne istotne parametry w celu zwiększenia możliwości uogólnienia wyników, a jednocześnie podkreślano różnice między podgrupami i optymalizowano skuteczność leczenia dostosowanego do płci biologicznej. Należy priorytetowo potraktować kompleksowy przegląd unijnych ram regulacyjnych dotyczących badań klinicznych w celu usunięcia wąskich gardeł proceduralnych.
+
+2. Zalecenia dotyczące chorób układu krążenia
+
+Zmniejszenie częstości występowania, zachorowalności i śmiertelności z powodu chorób układu krążenia u kobiet powinno stać się strategicznym priorytetem w unijnych i krajowych programach działań w dziedzinie zdrowia; należy opracować i wdrożyć kalkulator ryzyka sercowo-naczyniowego dostosowany do fizjologii kobiet i czynników na poszczególnych etapach życia.
+
+3. Zalecenia dotyczące endometriozy
+
+Należy promować wspólne finansowanie kompleksowych badań nad endometriozą oraz doskonalić szkolenia medyczne w zakresie wczesnej diagnostyki i inkluzywnej opieki.
+
+4. Zalecenia dotyczące mięśniaków macicy
+
+Należy skuteczniej informować na temat mięśniaków macicy, szczególnie społeczności o niższym statusie społeczno-ekonomicznym i ograniczonym poziomie wykształcenia oraz społeczności, w których częstość występowania jest wysoka. Ma to zwiększyć świadomość na temat tej choroby i skłonić do skorzystania z opieki zdrowotnej w odpowiednim czasie.
+
+5. Zalecenia dotyczące wrażliwych populacji w odniesieniu do chorób zakaźnych (w tym zakażeń przenoszonych drogą płciową i zaniedbanych chorób tropikalnych)
+
+Należy zapewnić kompleksowe badania nad zaniedbanymi populacjami ukierunkowane na interwencje w zakresie zakażeń przenoszonych drogą płciową i zaniedbanych chorób tropikalnych oraz poprawić dostęp migrujących kobiet do usług opieki zdrowotnej nad matkami i ogólnej opieki zdrowotnej.
+
+6. Zalecenia dotyczące schorzeń urologicznych i uroginekologicznych
+
+Należy promować profilaktykę przez edukację oraz włączyć ćwiczenia mięśni dna miednicy do przygotowania przed porodem i opieki poporodowej, aby zapobiegać obniżeniu narządów miednicy mniejszej i nietrzymaniu moczu.
+
+7. Zalecenia dotyczące przemocy położniczej i ginekologicznej
+
+Należy ujednolicić definicje i ramy prawne, przyjmując we wszystkich państwach członkowskich wspólne definicje i terminologię w zakresie przemocy położniczej i ginekologicznej.
+
+8. Zalecenia dotyczące diagnostyki i leczenia
+
+Należy wdrożyć kompleksowe strategie dotyczące nierówności płci w profilaktyce, diagnostyce i leczeniu. Należy priorytetowo traktować wczesne wykrywanie, badania podstawowych mechanizmów biologicznych wpływających na wyniki specyficzne dla danej płci oraz ukierunkowane zarządzanie kliniczne.
+
+9. Zalecenia dotyczące kształcenia i szkolenia w dziedzinie zdrowia kobiet
+
+Należy priorytetowo traktować kształcenie i szkolenie świadczeniodawców opieki zdrowotnej w kwestiach zdrowotnych dotyczących kobiet, aby uzyskali kompetencje pozwalające im zaspokoić potrzeby pacjentek. Należy zwiększyć równowagę płci wśród profesorów i badaczy w szkołach medycznych.
+
+10. Szersza polityka
+
+Należy wdrożyć innowacyjne modele finansowania, w których przydziela się budżety proporcjonalne do obciążenia chorobowego związanego ze szczególnymi schorzeniami kobiecymi, zapewniając właściwe zasoby na odpowiednią opiekę.
+
+
+
+W tym dokumencie streszczono badanie pt. „Gender Inequalities in Medical Research, Drug Development and Access to Care".
+Pełną wersję badania w języku angielskim można pobrać pod adresem: https://www.europarl.europa.eu/RegData/etudes/STUD/2025/778519/IUST_STU(2025)778519_EN.pdf

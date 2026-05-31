@@ -481,20 +481,44 @@ export const quizzes: Quiz[] = [
 export const curiosities: Curiosity[] = [
   {
     id: "1",
-    title: "Serce kobiety bije szybciej",
+    title: "Kobiecy zawał bez bólu w klatce piersiowej",
     content:
-      "Serce kobiety bije średnio 8-10 uderzeń na minutę szybciej niż serce mężczyzny. Kobiety mają też mniejsze serce proporcjonalnie do masy ciała.",
+      "Kobiety o wiele częściej niż mężczyźni odczuwają zawał serca jako skrajne zmęczenie, mdłości, duszności czy tępy ból między łopatkami – bez filmowego ucisku w mostku. Ponieważ medycyna przez dekady badała zawały głównie u mężczyzn, te kobiece objawy są do dziś często mylone ze stresem lub niestrawnością, co dramatycznie opóźnia ratującą życie pomoc.",
   },
   {
     id: "2",
-    title: "Hormony a ból",
+    title: "Kobiety biologicznie bardziej narażone na próchnicę",
     content:
-      "Kobiety odczuwają ból inaczej niż mężczyźni – estrogen wpływa na receptory bólowe, co może powodować większą wrażliwość na ból w określonych fazach cyklu.",
+      "Kobieca ślina jest produkowana w mniejszych ilościach i ma naturalnie niższe, bardziej kwasowe pH niż ślina mężczyzn – przez co słabiej neutralizuje kwasy i wypłukuje resztki jedzenia. Do tego dochodzą wahania hormonalne uwrażliwiające dziąsła oraz fakt, że dziewczynkom zęby wyrzynają się wcześniej, co wydłuża ekspozycję na bakterie w jamie ustnej.",
   },
   {
     id: "3",
-    title: "Kości kobiet tracą gęstość szybciej",
+    title: "Żołądek kobiety inaczej trawi leki",
     content:
-      "W pierwszych 5-7 latach po menopauzie kobiety mogą stracić nawet 20% masy kostnej. Suplementacja witaminy D i wapnia jest kluczowa po 40. roku życia.",
+      "Wydzielanie soku żołądkowego u kobiet jest mniejsze (szczególnie przed miesiączką), przez co środowisko w ich żołądku jest mniej kwaśne. Leki kwasowe (np. aspiryna, ibuprofen) mogą wchłaniać się słabiej, natomiast leki zasadowe – jak benzodiazepiny czy antydepresanty – wchłaniają się u pań znacznie lepiej. Tabletka wędruje też dłużej z żołądka do jelit.",
+  },
+  {
+    id: "4",
+    title: 'Zabójczy „Syndrom Yentl"',
+    content:
+      'Zjawisko to opisuje sytuację, w której pacjentka musi wykazywać dokładnie takie same objawy jak mężczyzna, by personel medyczny potraktował ją poważnie. Przy zawałach serca kobiece objawy często odbiegają od „męskiego wzorca", przez co kobiety rzadziej trafiają na odpowiednie badania (np. angiografię) i częściej dotyka je wyższa śmiertelność po hospitalizacji.',
+  },
+  {
+    id: "5",
+    title: "Płeć ignorowana nawet pod mikroskopem",
+    content:
+      "W badaniach dermatologicznych aż w 60% przypadków badacze nie podali płci badanych komórek ludzkich lub zwierzęcych. W tych eksperymentach, gdzie płeć zadeklarowano, 70% próbek pochodziło z organizmów męskich. Wykluczanie samic i kobiet zaczyna się więc już na najniższym szczeblu laboratoryjnym.",
+  },
+  {
+    id: "6",
+    title: "4,4 roku oczekiwania na diagnozę",
+    content:
+      'Ból zgłaszany przez kobiety bywa regularnie bagatelizowany i traktowany jako problem psychologiczny – echo dawnych diagnoz „histerii". Pacjentki z endometriozą czekają w Stanach Zjednoczonych średnio 4,4 roku od pierwszej wizyty do postawienia właściwej diagnozy.',
+  },
+  {
+    id: "7",
+    title: 'Medyczny „mit urody" i ocena piersi w imię nauki',
+    content:
+      'We współczesnej literaturze naukowej wciąż ukazują się badania o charakterze mizoginistycznym. Naukowcy subiektywnie oceniali „atrakcyjność" pacjentek z endometriozą, a w innym badaniu zastosowano technologię eye-tracking do analizy estetyki kobiecych piersi – mimo że sami autorzy przyznali, iż nie miało to przełożenia na poprawę leczenia.',
   },
 ];

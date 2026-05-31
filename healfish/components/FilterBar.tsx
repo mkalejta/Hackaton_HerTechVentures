@@ -3,7 +3,6 @@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search, ArrowUpDown } from "lucide-react";
-import { doctors } from "@/lib/mock-data";
 
 type Props = {
   search: string;
@@ -22,13 +21,11 @@ const selectCls =
 export default function FilterBar({
   search,
   onSearchChange,
-  author,
-  onAuthorChange,
   field,
   onFieldChange,
   sortOrder,
   onSortToggle,
-}: Props) {
+}: Omit<Props, "author" | "onAuthorChange"> & { author?: string; onAuthorChange?: (v: string) => void }) {
   return (
     <div className="flex flex-wrap gap-3 items-center">
       {/* Wyszukiwarka */}
@@ -45,20 +42,6 @@ export default function FilterBar({
           style={{ backgroundColor: "#ffffff" }}
         />
       </div>
-
-      {/* Autor */}
-      <select
-        value={author}
-        onChange={(e) => onAuthorChange(e.target.value)}
-        className={selectCls + " w-52"}
-      >
-        <option value="all">Wszyscy autorzy</option>
-        {doctors.map((doc) => (
-          <option key={doc.id} value={doc.id}>
-            {doc.name}
-          </option>
-        ))}
-      </select>
 
       {/* Dziedzina */}
       <select

@@ -1,24 +1,31 @@
 "use client";
 
-import { doctors, Doctor } from "@/lib/mock-data";
-import { ExternalLink, MapPin, Stethoscope } from "lucide-react";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { Calendar, MapPin, Stethoscope } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { api, ApiSpecialist } from "@/lib/api";
+import Link from "next/link";
 
 type Props = {
   title?: string;
-  items?: Doctor[];
+  items?: ApiSpecialist[];
   pink?: boolean;
 };
 
 export default function SpecialistCarousel({
   title = "Nasi specjaliści",
-  items = doctors,
+  items,
   pink = false,
 }: Props) {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [specialists, setSpecialists] = useState<ApiSpecialist[]>(items ?? []);
+
+  useEffect(() => {
+    if (items !== undefined) return;
+    api.getSpecialists().then(setSpecialists).catch(() => {});
+  }, [items]);
 
   const scroll = (dir: "left" | "right") => {
     if (!scrollRef.current) return;
@@ -29,6 +36,8 @@ export default function SpecialistCarousel({
   const iconBg = pink ? "bg-brand-pink/20" : "bg-white/70";
   const iconColor = pink ? "text-pink-500" : "text-brand-blue";
   const linkColor = pink ? "text-pink-500" : "text-brand-blue";
+
+  if (specialists.length === 0) return null;
 
   return (
     <section className="py-10">
@@ -64,7 +73,7 @@ export default function SpecialistCarousel({
           className="flex gap-4 overflow-x-auto scroll-smooth pb-3"
           style={{ scrollbarWidth: "none" }}
         >
-          {items.map((doc) => (
+          {specialists.map((doc) => (
             <div
               key={doc.id}
               className={cn(
@@ -85,14 +94,13 @@ export default function SpecialistCarousel({
                 <MapPin size={11} />
                 <span>{doc.location}</span>
               </div>
-              <a
-                href={doc.znanyLekarzUrl}
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                href={`/lekarze/${doc.id}`}
                 className={cn("mt-auto flex items-center gap-1 text-xs font-medium hover:underline", linkColor)}
               >
-                Umów wizytę <ExternalLink size={11} />
-              </a>
+                <Calendar size={11} />
+                {doc.user_id ? "Umów wizytę" : "Zobacz profil"}
+              </Link>
             </div>
           ))}
         </div>

@@ -1,21 +1,23 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Eye, EyeOff } from "lucide-react";
 import { api } from "@/lib/api";
 import { useAuth } from "@/lib/auth-context";
 
-export default function LoginPage() {
+function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl") ?? "/";
   const { login } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -24,12 +26,74 @@ export default function LoginPage() {
     try {
       const { access_token } = await api.login(email, password);
       await login(access_token);
-      router.push("/");
+      router.push(callbackUrl);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Błąd logowania");
     }
   };
 
+  return (
+    <div className="bg-white rounded-3xl shadow-bubble border border-gray-100 p-8">
+      <form className="space-y-5" onSubmit={handleSubmit}>
+        <div>
+          <label className="block text-sm font-medium text-[var(--color-text-heading)] mb-1.5">
+            Adres email
+          </label>
+          <Input
+            type="email"
+            placeholder="jan.kowalski@email.pl"
+            className="w-full rounded-2xl"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-[var(--color-text-heading)] mb-1.5">
+            Hasło
+          </label>
+          <div className="relative">
+            <Input
+              type={showPassword ? "text" : "password"}
+              placeholder="••••••••"
+              className="w-full pr-10 rounded-2xl"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <button
+              type="button"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-[color:var(--color-text-muted)] hover:text-gray-600"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+            </button>
+          </div>
+        </div>
+
+        <Button
+          type="submit"
+          className="w-full bg-brand-blue hover:bg-blue-400 text-white rounded-full shadow-bubble"
+        >
+          Zaloguj się
+        </Button>
+
+        {error && <p className="text-red-500 text-sm text-center mt-2">{error}</p>}
+      </form>
+
+      <p className="text-center text-sm text-[color:var(--color-text-secondary)] mt-6">
+        Nie masz konta?{" "}
+        <Link
+          href={`/rejestracja${callbackUrl !== "/" ? `?callbackUrl=${encodeURIComponent(callbackUrl)}` : ""}`}
+          className="text-brand-blue font-medium hover:underline"
+        >
+          Zarejestruj się
+        </Link>
+      </p>
+    </div>
+  );
+}
+
+export default function LoginPage() {
   return (
     <div className="min-h-[80vh] flex items-center justify-center px-4 py-12">
       <div
@@ -59,60 +123,9 @@ export default function LoginPage() {
           </p>
         </div>
 
-        <div className="bg-white rounded-3xl shadow-bubble border border-gray-100 p-8">
-          <form className="space-y-5" onSubmit={handleSubmit}>
-            <div>
-              <label className="block text-sm font-medium text-[var(--color-text-heading)] mb-1.5">
-                Adres email
-              </label>
-              <Input
-                type="email"
-                placeholder="jan.kowalski@email.pl"
-                className="w-full rounded-2xl"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-[var(--color-text-heading)] mb-1.5">
-                Hasło
-              </label>
-              <div className="relative">
-                <Input
-                  type={showPassword ? "text" : "password"}
-                  placeholder="••••••••"
-                  className="w-full pr-10 rounded-2xl"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-                <button
-                  type="button"
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[color:var(--color-text-muted)] hover:text-gray-600"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-                </button>
-              </div>
-            </div>
-
-            <Button
-              type="submit"
-              className="w-full bg-brand-blue hover:bg-blue-400 text-white rounded-full shadow-bubble"
-            >
-              Zaloguj się
-            </Button>
-
-            {error && <p className="text-red-500 text-sm text-center mt-2">{error}</p>}
-          </form>
-
-          <p className="text-center text-sm text-[color:var(--color-text-secondary)] mt-6">
-            Nie masz konta?{" "}
-            <Link href="/rejestracja" className="text-brand-blue font-medium hover:underline">
-              Zarejestruj się
-            </Link>
-          </p>
-        </div>
+        <Suspense fallback={<div className="bg-white rounded-3xl shadow-bubble border border-gray-100 p-8 text-center text-sm text-[color:var(--color-text-muted)]">Ładowanie...</div>}>
+          <LoginForm />
+        </Suspense>
       </div>
     </div>
   );

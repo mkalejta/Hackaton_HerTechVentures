@@ -4,7 +4,10 @@ import { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import { api, ApiArticle } from "@/lib/api";
 import FilterBar from "@/components/FilterBar";
-import { CalendarDays, User } from "lucide-react";
+import { CalendarDays, User, PenLine } from "lucide-react";
+import { useAuth } from "@/lib/auth-context";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 const fieldColors: Record<string, string> = {
   Endokrynologia: "bg-blue-100 text-blue-700 border-blue-200",
@@ -13,6 +16,7 @@ const fieldColors: Record<string, string> = {
 };
 
 export default function ArticlesPage() {
+  const { user } = useAuth();
   const [articles, setArticles] = useState<ApiArticle[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
@@ -38,11 +42,25 @@ export default function ArticlesPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-      <div className="bg-white/70 border border-gray-200 rounded-3xl px-6 py-5 shadow-bubble mb-8">
-        <h1 className="text-3xl font-bold text-[var(--color-text-title)] mb-1">Artykuły</h1>
-        <p className="text-[color:var(--color-text-secondary)]">
-          Artykuły pisane przez lekarzy – rzetelna wiedza o profilaktyce zdrowotnej.
-        </p>
+      <div className="bg-brand-gradient-soft border border-brand-blue/15 rounded-3xl px-6 py-5 shadow-bubble mb-8 flex items-start justify-between gap-4 flex-wrap">
+        <div>
+          <h1 className="text-3xl font-bold text-[var(--color-text-title)] mb-1">Artykuły</h1>
+          <p className="text-[color:var(--color-text-secondary)]">
+            Artykuły pisane przez lekarzy – rzetelna wiedza o profilaktyce zdrowotnej.
+          </p>
+        </div>
+        {user?.is_doctor && (
+          <Link
+            href="/artykuly/nowy"
+            className={cn(
+              buttonVariants({ variant: "default" }),
+              "bg-brand-blue hover:bg-blue-400 text-white rounded-full shadow-bubble flex items-center gap-2"
+            )}
+          >
+            <PenLine size={16} />
+            Dodaj artykuł
+          </Link>
+        )}
       </div>
 
       <div className="bg-white/60 border border-gray-200/70 rounded-2xl px-4 py-3 shadow-sm mb-8">

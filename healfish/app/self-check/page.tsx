@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import BackButton from "@/components/BackButton";
 import {
   Search,
   BookOpen,
@@ -11,10 +12,12 @@ import {
   RotateCcw,
   Stethoscope,
   MapPin,
-  ExternalLink,
+  Calendar,
+  SlidersHorizontal,
 } from "lucide-react";
 import { api, ApiArticleRef, ApiSpecialist } from "@/lib/api";
 import { selfCheckQuestions, questionsBySection } from "@/lib/self-check-questions";
+import { useAuth } from "@/lib/auth-context";
 
 const STORAGE_KEY = "self-check-state";
 
@@ -52,15 +55,42 @@ function saveState(state: SavedState) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
 }
 
+function isScaleQuestion(fullLabel: string): boolean {
+  return fullLabel.toLowerCase().includes("skala");
+}
+
+function ScaleInput({ value, onChange }: { value: string; onChange: (v: string) => void }) {
+  const selected = value ? parseInt(value, 10) : null;
+  return (
+    <div className="flex flex-wrap gap-1.5 mt-1">
+      {Array.from({ length: 10 }, (_, i) => i + 1).map((n) => (
+        <button
+          key={n}
+          type="button"
+          onClick={() => onChange(String(n))}
+          className={`w-9 h-9 rounded-xl text-sm font-semibold transition-all ${
+            selected === n
+              ? "bg-brand-blue text-white shadow-bubble"
+              : "bg-white border border-gray-200 text-[color:var(--color-text-body)] hover:border-brand-blue hover:text-brand-blue"
+          }`}
+        >
+          {n}
+        </button>
+      ))}
+    </div>
+  );
+}
+
 export default function SelfCheckPage() {
+  const { isLoggedIn, user } = useAuth();
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [aiAnswer, setAiAnswer] = useState<string | null>(null);
   const [apiRefs, setApiRefs] = useState<ApiArticleRef[]>([]);
   const [specialists, setSpecialists] = useState<ApiSpecialist[]>([]);
   const [loading, setLoading] = useState(false);
   const [hydrated, setHydrated] = useState(false);
+  const [includeProfile, setIncludeProfile] = useState(false);
 
-  // Restore persisted state after hydration
   useEffect(() => {
     const saved = loadState();
     if (saved) {
@@ -72,7 +102,6 @@ export default function SelfCheckPage() {
     setHydrated(true);
   }, []);
 
-  // Persist on every change (skip first render before hydration)
   useEffect(() => {
     if (!hydrated) return;
     saveState({ answers, aiAnswer, apiRefs, specialists });
@@ -85,10 +114,20 @@ export default function SelfCheckPage() {
     if (filledCount === 0) return;
     setLoading(true);
     try {
-      const res = await api.selfCheck(answers);
+      let userProfile: Record<string, unknown> | undefined;
+      if (includeProfile && isLoggedIn && user) {
+        userProfile = {
+          age: user.age ?? undefined,
+          gender: user.gender ?? undefined,
+          weight: user.weight ?? undefined,
+          height: user.height ?? undefined,
+        };
+        if (!Object.values(userProfile).some(Boolean)) userProfile = undefined;
+      }
+      const res = await api.selfCheck(answers, userProfile);
       setAiAnswer(res.answer);
-      setApiRefs(res.articles);
-      setSpecialists(res.specialists ?? []);
+      setApiRefs(res.articles.slice(0, 3));
+      setSpecialists(res.specialists.slice(0, 3));
       setTimeout(() => {
         document.getElementById("self-check-results")?.scrollIntoView({ behavior: "smooth" });
       }, 100);
@@ -108,6 +147,19 @@ export default function SelfCheckPage() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  if (user?.is_doctor) {
+    return (
+      <div className="max-w-md mx-auto px-4 py-24 text-center">
+        <div className="bg-white rounded-3xl border border-gray-100 shadow-bubble p-10">
+          <p className="text-[color:var(--color-text-muted)]">Self-check jest dostępny tylko dla pacjentów.</p>
+          <Link href="/artykuly" className="inline-block mt-4 text-sm text-brand-blue font-medium hover:underline">
+            Przejdź do artykułów
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       {/* Header */}
@@ -126,6 +178,29 @@ export default function SelfCheckPage() {
         </p>
       </div>
 
+      {/* "Uwzględniaj moje parametry" toggle — only for logged-in users */}
+      {isLoggedIn && (
+        <div className="mb-6">
+          <button
+            type="button"
+            onClick={() => setIncludeProfile((v) => !v)}
+            className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium border transition-all ${
+              includeProfile
+                ? "bg-brand-blue text-white border-brand-blue shadow-bubble"
+                : "bg-white border-gray-200 text-[color:var(--color-text-body)] hover:border-brand-blue hover:text-brand-blue"
+            }`}
+          >
+            <SlidersHorizontal size={15} />
+            Uwzględniaj moje parametry
+          </button>
+          {includeProfile && (
+            <p className="mt-2 text-xs text-[color:var(--color-text-muted)]">
+              Twoje dane z profilu (wiek, płeć, waga, wzrost) zostaną dołączone do zapytania.
+            </p>
+          )}
+        </div>
+      )}
+
       {/* Questions grouped by section */}
       <div className="space-y-8 mb-8">
         {questionsBySection.map(({ section, questions }) => (
@@ -142,21 +217,31 @@ export default function SelfCheckPage() {
                 >
                   <div className="w-1 rounded-full flex-shrink-0 bg-brand-blue" />
                   <div className="flex-1">
-                    <label className="block text-sm font-medium text-[var(--color-text-heading)] mb-1">
-                      {q.shortLabel}
-                    </label>
+                    <div className="flex items-center justify-between mb-1">
+                      <label className="block text-sm font-medium text-[var(--color-text-heading)]">
+                        {q.shortLabel}
+                      </label>
+                      <span className="text-xs text-[color:var(--color-text-muted)] ml-2">(opcjonalne)</span>
+                    </div>
                     <p className="text-xs text-[color:var(--color-text-muted)] mb-2 leading-relaxed">
                       {q.fullLabel}
                     </p>
-                    <textarea
-                      className="w-full text-sm border border-gray-200 rounded-2xl px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-brand-blue resize-none bg-white/60"
-                      rows={2}
-                      placeholder={q.placeholder}
-                      value={answers[q.id] ?? ""}
-                      onChange={(e) =>
-                        setAnswers((prev) => ({ ...prev, [q.id]: e.target.value }))
-                      }
-                    />
+                    {isScaleQuestion(q.fullLabel) ? (
+                      <ScaleInput
+                        value={answers[q.id] ?? ""}
+                        onChange={(v) => setAnswers((prev) => ({ ...prev, [q.id]: v }))}
+                      />
+                    ) : (
+                      <textarea
+                        className="w-full text-sm border border-gray-200 rounded-2xl px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-brand-blue resize-none bg-white/60"
+                        rows={2}
+                        placeholder={q.placeholder}
+                        value={answers[q.id] ?? ""}
+                        onChange={(e) =>
+                          setAnswers((prev) => ({ ...prev, [q.id]: e.target.value }))
+                        }
+                      />
+                    )}
                   </div>
                 </div>
               ))}
@@ -220,12 +305,12 @@ export default function SelfCheckPage() {
             </div>
           )}
 
-          {/* Articles */}
+          {/* Articles — max 3 */}
           <div>
             <div className="tile-blend rounded-3xl px-5 py-3 mb-4 border border-white/50 shadow-sm inline-flex items-center gap-2">
               <BookOpen size={16} className="text-brand-blue" />
               <h2 className="text-sm font-semibold text-[var(--color-text-heading)]">
-                Dopasowane artykuły ({apiRefs.length})
+                Dopasowane artykuły ({Math.min(apiRefs.length, 3)})
               </h2>
             </div>
 
@@ -235,7 +320,7 @@ export default function SelfCheckPage() {
               </p>
             ) : (
               <div className="space-y-4">
-                {apiRefs.map((ref) => (
+                {apiRefs.slice(0, 3).map((ref) => (
                   <Link key={ref.slug} href={`/artykuly/${ref.slug}`} className="group block">
                     <div className="bg-white rounded-3xl border border-gray-100 shadow-bubble hover:shadow-bubble-hover transition-all hover:-translate-y-0.5 p-5 flex flex-col gap-2">
                       <span
@@ -261,17 +346,17 @@ export default function SelfCheckPage() {
             )}
           </div>
 
-          {/* Specialist tiles */}
+          {/* Specialist tiles — max 3 */}
           {specialists.length > 0 && (
             <div>
               <div className="tile-blend rounded-3xl px-5 py-3 mb-4 border border-white/50 shadow-sm inline-flex items-center gap-2">
                 <Stethoscope size={16} className="text-brand-blue" />
                 <h2 className="text-sm font-semibold text-[var(--color-text-heading)]">
-                  Specjaliści w Twoim rejonie
+                  Specjaliści w Twoim rejonie ({Math.min(specialists.length, 3)})
                 </h2>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {specialists.map((s) => (
+                {specialists.slice(0, 3).map((s) => (
                   <div
                     key={s.id}
                     className="bg-white rounded-3xl border border-gray-100 shadow-bubble p-4 flex flex-col gap-3"
@@ -296,14 +381,13 @@ export default function SelfCheckPage() {
                       <MapPin size={11} />
                       {s.location}
                     </div>
-                    <a
-                      href={s.znany_lekarz_url ?? "https://www.znany-lekarz.pl"}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                    <Link
+                      href={`/lekarze/${s.id}`}
                       className="mt-auto flex items-center gap-1 text-xs font-medium text-brand-blue hover:underline"
                     >
-                      Umów wizytę <ExternalLink size={11} />
-                    </a>
+                      <Calendar size={11} />
+                      {s.user_id ? "Umów wizytę" : "Zobacz profil"}
+                    </Link>
                   </div>
                 ))}
               </div>

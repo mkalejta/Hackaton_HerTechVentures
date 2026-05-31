@@ -1,0 +1,13 @@
+---
+article_slug: syndrom-yentl-wykluczenie-kobiet-badania
+source_url: https://pmc.ncbi.nlm.nih.gov/articles/PMC8812498/
+---
+
+Merone i in., 2022 — Sex Inequalities in Medical Research
+
+Przegląd literatury demaskujący ciągłe wykluczanie kobiet z badań medycznych oraz obecność szkodliwej mizoginii we współczesnej nauce.
+
+Pełna nazwa badania: Sex Inequalities in Medical Research: A Systematic Scoping Review of the Literature, Women's Health Report, 2022.
+Link do pełnego tekstu: https://pmc.ncbi.nlm.nih.gov/articles/PMC8812498/
+
+Badanie (systematyczny przegląd literatury z lat 2009–2019) analizowało skalę zjawiska luki płciowej i mizoginii we współczesnych publikacjach medycznych. Wykazano, że kobiety wciąż są niedoreprezentowane w badaniach klinicznych (nawet na poziomie badań komórkowych i zwierzęcych często całkowicie ignoruje się płeć), a wyniki rzadko są analizowane w podgrupach. Skutkuje to tzw. syndromem Yentl, czyli diagnozowaniem i leczeniem kobiet według nieadekwatnych, męskich wzorców, co prowadzi do opóźnień w leczeniu i wyższej śmiertelności (np. przy zawałach serca). Przegląd ujawnił również istnienie publikacji jawnie mizoginistycznych, które pod pretekstem medycznym oceniały fizyczną atrakcyjność pacjentek, podsycając krzywdzący „mit urody” i niszcząc relację na linii pacjent-lekarz.

@@ -1,21 +1,40 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import { buttonVariants } from "@/components/ui/button";
-import { CalendarDays, ExternalLink, BookOpen, Brain, MapPin } from "lucide-react";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { CalendarDays, ExternalLink, BookOpen, Brain, MapPin, Calendar, Trash2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { api, ApiArticleDetail } from "@/lib/api";
+import { useAuth } from "@/lib/auth-context";
+import BackButton from "@/components/BackButton";
 
 export default function ArticlePage() {
   const { slug } = useParams<{ slug: string }>();
+  const router = useRouter();
+  const { user } = useAuth();
   const [article, setArticle] = useState<ApiArticleDetail | null>(null);
   const [notFoundState, setNotFoundState] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     api.getArticle(slug).then(setArticle).catch(() => setNotFoundState(true));
   }, [slug]);
+
+  const handleDelete = async () => {
+    if (!confirm("Czy na pewno chcesz usunąć ten artykuł?")) return;
+    setDeleting(true);
+    try {
+      await api.deleteArticle(slug);
+      router.push("/artykuly");
+    } catch (err: unknown) {
+      alert(err instanceof Error ? err.message : "Błąd usuwania");
+      setDeleting(false);
+    }
+  };
+
+  const isAuthor = user && article && user.id === article.author_id;
 
   if (notFoundState) return <div className="text-center py-20">Artykuł nie znaleziony.</div>;
   if (!article) return <div className="text-center py-20">Ładowanie...</div>;
@@ -24,6 +43,20 @@ export default function ArticlePage() {
     <>
       <div className="bg-brand-gradient-soft py-10 border-b border-gray-100">
         <div className="max-w-3xl mx-auto px-4 sm:px-6">
+          <div className="flex items-center justify-between mb-4">
+            <BackButton label="Wróć do artykułów" />
+            {isAuthor && (
+              <Button
+                variant="outline"
+                onClick={handleDelete}
+                disabled={deleting}
+                className="rounded-full border-red-200 text-red-600 hover:bg-red-50 hover:border-red-400 gap-1.5"
+              >
+                <Trash2 size={14} />
+                {deleting ? "Usuwanie..." : "Usuń artykuł"}
+              </Button>
+            )}
+          </div>
           <div className="inline-flex items-center gap-2 text-sm text-brand-blue font-medium tile-support px-3 py-1 rounded-full mb-4 border border-brand-blue/20">
             <BookOpen size={14} />
             {article.specialization}
@@ -58,14 +91,13 @@ export default function ArticlePage() {
               {article.author_location}
             </div>
           </div>
-          <a
-            href={article.znany_lekarz_url ?? "#"}
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            href={`/lekarze/${article.author_id}`}
             className="flex items-center gap-1.5 text-sm text-brand-blue font-medium hover:underline"
           >
-            Umów wizytę <ExternalLink size={13} />
-          </a>
+            <Calendar size={13} />
+            {article.author_user_id ? "Umów wizytę" : "Zobacz profil"}
+          </Link>
         </div>
 
         <div className="mb-10 space-y-4">
@@ -129,20 +161,19 @@ export default function ArticlePage() {
               Chcesz skonsultować się z {article.author_first_name} {article.author_last_name}?
             </p>
             <p className="text-sm text-[color:var(--color-text-secondary)]">
-              Umów wizytę przez Znany Lekarz
+              {article.author_user_id ? "Umów wizytę online – wybierz termin" : "Sprawdź profil lekarza"}
             </p>
           </div>
-          <a
-            href={article.znany_lekarz_url ?? "#"}
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            href={`/lekarze/${article.author_id}`}
             className={cn(
               buttonVariants({ variant: "default" }),
               "bg-brand-blue hover:bg-blue-400 text-white rounded-full px-6 shadow-bubble"
             )}
           >
-            Umów wizytę
-          </a>
+            <Calendar size={15} className="mr-2" />
+            {article.author_user_id ? "Umów wizytę" : "Profil lekarza"}
+          </Link>
         </div>
       </div>
     </>
