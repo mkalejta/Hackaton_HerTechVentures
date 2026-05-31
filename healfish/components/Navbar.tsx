@@ -2,10 +2,11 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/lib/auth-context";
 
 const navLinks = [
   { href: "/artykuly", label: "Artykuły" },
@@ -16,7 +17,11 @@ const navLinks = [
 
 export default function Navbar() {
   const pathname = usePathname();
+  const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { isLoggedIn, user, logout } = useAuth();
+
+  const handleLogout = () => { logout(); router.push("/"); };
 
   const isWomen = pathname.startsWith("/dla-kobiet");
 
@@ -89,28 +94,53 @@ export default function Navbar() {
 
           {/* Auth */}
           <div className="hidden md:flex items-center gap-2">
-            <Link
-              href="/logowanie"
-              className={cn(
-                "text-sm font-medium px-4 py-2 rounded-full transition-colors",
-                isWomen
-                  ? "text-gray-700 hover:bg-pink-100/50"
-                  : "text-white/90 hover:text-white hover:bg-white/20"
-              )}
-            >
-              Zaloguj
-            </Link>
-            <Link
-              href="/rejestracja"
-              className={cn(
-                "text-sm font-semibold rounded-full px-5 py-2 transition-colors shadow-sm",
-                isWomen
-                  ? "bg-brand-pink text-white hover:bg-pink-400"
-                  : "bg-white text-brand-blue hover:bg-white/90"
-              )}
-            >
-              Zarejestruj się
-            </Link>
+            {isLoggedIn ? (
+              <>
+                <span className={cn(
+                  "flex items-center gap-1.5 px-3 py-1.5 rounded-full font-semibold text-sm",
+                  isWomen ? "text-gray-700" : "text-white"
+                )}>
+                  {user?.points_total ?? 0}
+                  <Image src="/images/rybbs.png" alt="rybbs" width={48} height={20} className="h-5 w-auto" />
+                </span>
+                <button
+                  onClick={handleLogout}
+                  className={cn(
+                    "text-sm font-semibold rounded-full px-5 py-2 transition-colors shadow-sm",
+                    isWomen
+                      ? "bg-brand-pink text-white hover:bg-pink-400"
+                      : "bg-white text-brand-blue hover:bg-white/90"
+                  )}
+                >
+                  Wyloguj
+                </button>
+              </>
+            ) : (
+              <>
+                <Link
+                  href="/logowanie"
+                  className={cn(
+                    "text-sm font-medium px-4 py-2 rounded-full transition-colors",
+                    isWomen
+                      ? "text-gray-700 hover:bg-pink-100/50"
+                      : "text-white/90 hover:text-white hover:bg-white/20"
+                  )}
+                >
+                  Zaloguj
+                </Link>
+                <Link
+                  href="/rejestracja"
+                  className={cn(
+                    "text-sm font-semibold rounded-full px-5 py-2 transition-colors shadow-sm",
+                    isWomen
+                      ? "bg-brand-pink text-white hover:bg-pink-400"
+                      : "bg-white text-brand-blue hover:bg-white/90"
+                  )}
+                >
+                  Zarejestruj się
+                </Link>
+              </>
+            )}
           </div>
 
           {/* Mobile toggle */}
@@ -158,28 +188,50 @@ export default function Navbar() {
             );
           })}
           <div className="flex flex-col gap-2 pt-2 border-t border-white/20">
-            <Link
-              href="/logowanie"
-              onClick={() => setMobileOpen(false)}
-              className={cn(
-                "text-sm font-medium py-2.5 px-4 rounded-full transition-colors",
-                isWomen ? "text-gray-700" : "text-white"
-              )}
-            >
-              Zaloguj
-            </Link>
-            <Link
-              href="/rejestracja"
-              onClick={() => setMobileOpen(false)}
-              className={cn(
-                "text-sm font-semibold text-center rounded-full px-5 py-2.5 transition-colors",
-                isWomen
-                  ? "bg-brand-pink text-white hover:bg-pink-400"
-                  : "bg-white text-brand-blue hover:bg-white/90"
-              )}
-            >
-              Zarejestruj się
-            </Link>
+            {isLoggedIn ? (
+              <>
+                <p className={cn("text-sm font-semibold px-4 py-2 flex items-center gap-1.5", isWomen ? "text-gray-700" : "text-white/90")}>
+                  {user?.points_total ?? 0}
+                  <Image src="/images/rybbs.png" alt="rybbs" width={48} height={20} className="h-5 w-auto" />
+                </p>
+                <button
+                  onClick={() => { setMobileOpen(false); handleLogout(); }}
+                  className={cn(
+                    "text-sm font-semibold text-center rounded-full px-5 py-2.5 transition-colors",
+                    isWomen
+                      ? "bg-brand-pink text-white hover:bg-pink-400"
+                      : "bg-white text-brand-blue hover:bg-white/90"
+                  )}
+                >
+                  Wyloguj
+                </button>
+              </>
+            ) : (
+              <>
+                <Link
+                  href="/logowanie"
+                  onClick={() => setMobileOpen(false)}
+                  className={cn(
+                    "text-sm font-medium py-2.5 px-4 rounded-full transition-colors",
+                    isWomen ? "text-gray-700" : "text-white"
+                  )}
+                >
+                  Zaloguj
+                </Link>
+                <Link
+                  href="/rejestracja"
+                  onClick={() => setMobileOpen(false)}
+                  className={cn(
+                    "text-sm font-semibold text-center rounded-full px-5 py-2.5 transition-colors",
+                    isWomen
+                      ? "bg-brand-pink text-white hover:bg-pink-400"
+                      : "bg-white text-brand-blue hover:bg-white/90"
+                  )}
+                >
+                  Zarejestruj się
+                </Link>
+              </>
+            )}
           </div>
         </div>
       )}

@@ -518,6 +518,8 @@ def main():
             quiz_count += 1
             question_count += len(block["questions"])
 
+    ensure_manual_data(conn)
+
     conn.close()
     elapsed = time.time() - start
     print("\n" + "=" * 50)
@@ -527,6 +529,57 @@ def main():
     print(f"  Questions total  : {question_count}")
     print(f"  Time elapsed     : {elapsed:.1f}s")
     print("=" * 50)
+
+
+def ensure_manual_data(conn) -> None:
+    """Idempotent post-seed fixes: quiz_slug links and Trójmiasto specialists."""
+    with conn.cursor() as cur:
+        # Link articles to their quizzes
+        quiz_links = [
+            ("quiz-cwiczenia-przewlekly-bol-plecow", "bol-krzyz-ruch-sprzymierzeniec"),
+            ("quiz-spacery-bol-plecow",               "spacer-po-epizodzie-bolu-plecow"),
+            ("quiz-cwiczenia-profilaktyka-plecy",      "cwiczenia-profilaktyka-bolu-plecow"),
+            ("quiz-chodzenie-kregoslup",               "ile-chodzic-dziennie-kregoslup"),
+            ("quiz-praca-siedzaca-bol-plecow",         "praca-siedzaca-zmiana-pozycji"),
+        ]
+        for quiz_slug, article_slug in quiz_links:
+            cur.execute(
+                "UPDATE articles SET quiz_slug = %s WHERE slug = %s AND (quiz_slug IS NULL OR quiz_slug != %s)",
+                (quiz_slug, article_slug, quiz_slug),
+            )
+
+        # znany_lekarz_url for existing Gdańsk physio authors
+        cur.execute(
+            """
+            UPDATE authors
+            SET znany_lekarz_url = 'https://www.znany-lekarz.pl/lekarze/fizjoterapeuta/gdansk'
+            WHERE specialization = 'Fizjoterapia' AND location = 'Gdańsk'
+              AND (znany_lekarz_url IS NULL OR znany_lekarz_url = '')
+            """
+        )
+
+        # Trójmiasto specialists
+        trojmiasto = [
+            ("Agnieszka", "Wojciechowska", "Fizjoterapia",   "Gdynia", "https://www.znany-lekarz.pl/lekarze/fizjoterapeuta/gdynia"),
+            ("Joanna",    "Kamińska",      "Endokrynologia", "Gdańsk", "https://www.znany-lekarz.pl/lekarze/endokrynolog/gdansk"),
+            ("Piotr",     "Szymański",     "Endokrynologia", "Gdynia", "https://www.znany-lekarz.pl/lekarze/endokrynolog/gdynia"),
+            ("Marta",     "Kowalik",       "Stomatologia",   "Gdańsk", "https://www.znany-lekarz.pl/lekarze/stomatolog/gdansk"),
+            ("Jakub",     "Lewandowski",   "Stomatologia",   "Gdynia", "https://www.znany-lekarz.pl/lekarze/stomatolog/gdynia"),
+        ]
+        for first, last, spec, loc, url in trojmiasto:
+            cur.execute(
+                """
+                INSERT INTO authors (first_name, last_name, specialization, location, znany_lekarz_url)
+                VALUES (%s, %s, %s, %s, %s)
+                ON CONFLICT (first_name, last_name) DO UPDATE
+                    SET specialization   = EXCLUDED.specialization,
+                        location         = EXCLUDED.location,
+                        znany_lekarz_url = EXCLUDED.znany_lekarz_url
+                """,
+                (first, last, spec, loc, url),
+            )
+    conn.commit()
+    log.info("Manual data fixes applied.")
 
 
 if __name__ == "__main__":

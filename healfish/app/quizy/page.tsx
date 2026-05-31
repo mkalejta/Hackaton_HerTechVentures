@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
-import { quizzes } from "@/lib/mock-data";
+import { api, ApiQuiz } from "@/lib/api";
 import FilterBar from "@/components/FilterBar";
 import { CalendarDays, Brain } from "lucide-react";
 
@@ -13,27 +13,30 @@ const fieldColors: Record<string, string> = {
 };
 
 export default function QuizzesPage() {
+  const [quizzes, setQuizzes] = useState<ApiQuiz[]>([]);
   const [search, setSearch] = useState("");
-  const [author, setAuthor] = useState("all");
   const [field, setField] = useState("all");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
+
+  useEffect(() => {
+    api.getQuizzes().then(setQuizzes);
+  }, []);
 
   const filtered = useMemo(() => {
     return quizzes
       .filter((q) => {
         const matchSearch = !search || q.title.toLowerCase().includes(search.toLowerCase());
-        const matchField = field === "all" || q.field === field;
+        const matchField = field === "all" || q.specialization === field;
         return matchSearch && matchField;
       })
       .sort((a, b) => {
         const diff = new Date(a.date).getTime() - new Date(b.date).getTime();
         return sortOrder === "desc" ? -diff : diff;
       });
-  }, [search, field, sortOrder]);
+  }, [quizzes, search, field, sortOrder]);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-      {/* Header in frame */}
       <div className="bg-white/70 border border-gray-200 rounded-3xl px-6 py-5 shadow-bubble mb-8">
         <h1 className="text-3xl font-bold text-[var(--color-text-title)] mb-1">Quizy</h1>
         <p className="text-[color:var(--color-text-secondary)]">
@@ -42,13 +45,12 @@ export default function QuizzesPage() {
         </p>
       </div>
 
-      {/* Filter */}
       <div className="bg-white/60 border border-gray-200/70 rounded-2xl px-4 py-3 shadow-sm mb-8">
         <FilterBar
           search={search}
           onSearchChange={setSearch}
-          author={author}
-          onAuthorChange={setAuthor}
+          author="all"
+          onAuthorChange={() => {}}
           field={field}
           onFieldChange={setField}
           sortOrder={sortOrder}
@@ -66,8 +68,8 @@ export default function QuizzesPage() {
             <Link key={quiz.id} href={`/quizy/${quiz.slug}`} className="group">
               <div className="tile-green-light rounded-3xl p-6 h-full border border-green-200/40 shadow-bubble hover:shadow-bubble-hover transition-all hover:-translate-y-1 flex flex-col">
                 <div className="flex items-start justify-between mb-4">
-                  <span className={`text-xs font-medium px-2.5 py-1 rounded-full border ${fieldColors[quiz.field]}`}>
-                    {quiz.field}
+                  <span className={`text-xs font-medium px-2.5 py-1 rounded-full border ${fieldColors[quiz.specialization] ?? "bg-gray-100 text-gray-700 border-gray-200"}`}>
+                    {quiz.specialization}
                   </span>
                   <div className="w-9 h-9 rounded-2xl bg-white/80 flex items-center justify-center shadow-sm">
                     <Brain size={16} className="text-green-600" />
@@ -79,7 +81,7 @@ export default function QuizzesPage() {
                 <div className="flex items-center gap-2 text-xs text-[color:var(--color-text-secondary)] mt-4 pt-4 border-t border-green-200/30">
                   <CalendarDays size={12} />
                   <span>{new Date(quiz.date).toLocaleDateString("pl-PL")}</span>
-                  <span className="ml-auto">{quiz.questions.length} pytań</span>
+                  <span className="ml-auto">{quiz.passing_score}% próg zdawalności</span>
                 </div>
               </div>
             </Link>

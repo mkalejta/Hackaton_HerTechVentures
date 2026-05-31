@@ -1,29 +1,32 @@
 "use client";
 
-import { quizzes } from "@/lib/mock-data";
-import { notFound } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { buttonVariants } from "@/components/ui/button";
 import SpecialistCarousel from "@/components/SpecialistCarousel";
 import { CheckCircle2, XCircle, ChevronLeft, ChevronRight, Lock } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { api, ApiQuizDetail } from "@/lib/api";
+import { useAuth } from "@/lib/auth-context";
 
-const MOCK_LOGGED_IN = false;
-
-type Props = { params: { slug: string } };
-
-export default function QuizPage({ params }: Props) {
-  const { slug } = params;
-  const quiz = quizzes.find((q) => q.slug === slug);
-  if (!quiz) notFound();
-
+export default function QuizPage() {
+  const { slug } = useParams<{ slug: string }>();
+  const [quiz, setQuiz] = useState<ApiQuizDetail | null>(null);
   const [current, setCurrent] = useState(0);
-  const [selected, setSelected] = useState<number | null>(null);
-  const [answers, setAnswers] = useState<(number | null)[]>(Array(quiz.questions.length).fill(null));
+  const [selectedLabel, setSelectedLabel] = useState<string | null>(null);
+  const [answers, setAnswers] = useState<Record<number, string | null>>({});
   const [finished, setFinished] = useState(false);
+  const [result, setResult] = useState<{ score_percent: number; passed: boolean; points_earned: number; correct_answers: Record<number, string> } | null>(null);
+  const { isLoggedIn, loading } = useAuth();
 
-  if (!MOCK_LOGGED_IN) {
+  useEffect(() => {
+    if (isLoggedIn) api.getQuiz(slug).then(setQuiz).catch(() => {});
+  }, [slug, isLoggedIn]);
+
+  if (loading) return null;
+
+  if (!isLoggedIn) {
     return (
       <div className="max-w-md mx-auto px-4 py-24 text-center">
         <div className="bg-white rounded-3xl border border-gray-100 shadow-bubble p-10">
@@ -58,30 +61,47 @@ export default function QuizPage({ params }: Props) {
     );
   }
 
-  const question = quiz.questions[current];
-  const score = answers.filter((a, i) => a === quiz.questions[i].correct).length;
+  if (!quiz) {
+    return <div className="text-center py-20">Ładowanie...</div>;
+  }
 
-  const handleSelect = (idx: number) => {
-    if (selected !== null) return;
-    setSelected(idx);
-    const updated = [...answers];
-    updated[current] = idx;
-    setAnswers(updated);
+  const question = quiz.questions[current];
+
+  const handleSelect = (label: string) => {
+    if (selectedLabel !== null) return;
+    setSelectedLabel(label);
+    setAnswers((prev) => ({ ...prev, [question.question_index]: label }));
   };
 
   const handleNext = () => {
     if (current < quiz.questions.length - 1) {
+      const nextQ = quiz.questions[current + 1];
       setCurrent(current + 1);
-      setSelected(answers[current + 1]);
+      setSelectedLabel(answers[nextQ.question_index] ?? null);
     } else {
-      setFinished(true);
+      handleFinish();
     }
   };
 
   const handlePrev = () => {
     if (current > 0) {
+      const prevQ = quiz.questions[current - 1];
       setCurrent(current - 1);
-      setSelected(answers[current - 1]);
+      setSelectedLabel(answers[prevQ.question_index] ?? null);
+    }
+  };
+
+  const handleFinish = async () => {
+    const payload: Record<number, string> = {};
+    for (const [k, v] of Object.entries(answers)) {
+      if (v) payload[Number(k)] = v;
+    }
+    try {
+      const res = await api.submitAttempt(slug, payload);
+      setResult(res);
+      setFinished(true);
+    } catch (e) {
+      alert(e instanceof Error ? e.message : "Błąd przy zapisie");
     }
   };
 
@@ -94,16 +114,16 @@ export default function QuizPage({ params }: Props) {
               <CheckCircle2 size={36} className="text-teal-600" />
             </div>
             <h2 className="text-3xl font-bold text-[var(--color-text-title)] mb-2">Quiz ukończony!</h2>
-            <p className="text-[color:var(--color-text-body)] mb-6">
-              Twój wynik:{" "}
-              <strong className="text-brand-blue text-2xl">{score}</strong> / {quiz.questions.length}
+            <p className="text-[color:var(--color-text-body)] mb-2">
+              Wynik: <strong className="text-brand-blue text-2xl">{result?.score_percent}%</strong>
             </p>
+            {result?.passed && (
+              <p className="text-green-600 font-medium mb-4">Zdobyto {result.points_earned} punktów!</p>
+            )}
             <div className="tile-green rounded-3xl p-5 mb-6 border border-white/50">
               <p className="font-medium text-[var(--color-text-heading)]">
-                {score === quiz.questions.length
+                {result?.passed
                   ? "Doskonale! Znasz się na tym temacie."
-                  : score >= quiz.questions.length / 2
-                  ? "Dobry wynik! Warto doczytać artykuł powiązany z tym quizem."
                   : "Warto pogłębić wiedzę – przeczytaj powiązany artykuł."}
               </p>
             </div>
@@ -111,18 +131,19 @@ export default function QuizPage({ params }: Props) {
               <Button
                 onClick={() => {
                   setCurrent(0);
-                  setSelected(null);
-                  setAnswers(Array(quiz.questions.length).fill(null));
+                  setSelectedLabel(null);
+                  setAnswers({});
                   setFinished(false);
+                  setResult(null);
                 }}
                 variant="outline"
                 className="rounded-full"
               >
                 Spróbuj jeszcze raz
               </Button>
-              {quiz.relatedArticleSlug && (
+              {quiz.article_slug && (
                 <a
-                  href={`/artykuly/${quiz.relatedArticleSlug}`}
+                  href={`/artykuly/${quiz.article_slug}`}
                   className={cn(
                     buttonVariants({ variant: "default" }),
                     "bg-brand-blue hover:bg-blue-400 text-white rounded-full shadow-bubble"
@@ -144,7 +165,6 @@ export default function QuizPage({ params }: Props) {
   return (
     <>
       <div className="max-w-2xl mx-auto px-4 sm:px-6 py-10">
-        {/* Title + progress frame */}
         <div className="bg-white/70 border border-gray-200 rounded-3xl px-5 py-4 shadow-bubble mb-6">
           <div className="flex items-center justify-between mb-3">
             <h1 className="text-lg font-bold text-[var(--color-text-heading)]">{quiz.title}</h1>
@@ -160,41 +180,33 @@ export default function QuizPage({ params }: Props) {
           </div>
         </div>
 
-        {/* Question card */}
         <div className="bg-white rounded-3xl border border-gray-100 shadow-bubble p-6 mb-6">
           <p className="font-semibold text-[var(--color-text-heading)] text-lg mb-6">
-            {question.question}
+            {question.question_text}
           </p>
           <div className="space-y-3">
-            {question.answers.map((answer, idx) => {
-              let cls =
-                "border border-gray-200 hover:border-brand-blue text-[color:var(--color-text-body)]";
-              if (selected !== null) {
-                if (idx === question.correct)
-                  cls = "border-2 border-green-400 bg-green-50 text-green-700";
-                else if (idx === selected && idx !== question.correct)
-                  cls = "border-2 border-red-300 bg-red-50 text-red-600";
-                else cls = "border border-gray-100 text-[color:var(--color-text-muted)]";
+            {question.answers.map((answer) => {
+              let cls = "border border-gray-200 hover:border-brand-blue text-[color:var(--color-text-body)]";
+              if (selectedLabel !== null) {
+                if (answer.label === selectedLabel) {
+                  cls = "border-2 border-brand-blue bg-blue-50 text-brand-blue";
+                } else {
+                  cls = "border border-gray-100 text-[color:var(--color-text-muted)]";
+                }
               }
               return (
                 <button
-                  key={idx}
-                  onClick={() => handleSelect(idx)}
+                  key={answer.id}
+                  onClick={() => handleSelect(answer.label)}
                   className={cn(
                     "w-full text-left rounded-2xl px-4 py-3.5 text-sm transition-all flex items-center gap-3",
                     cls
                   )}
                 >
                   <span className="font-bold w-6 h-6 rounded-lg tile-support flex items-center justify-center text-xs flex-shrink-0">
-                    {["A", "B", "C", "D"][idx]}
+                    {answer.label}
                   </span>
-                  <span className="flex-1">{answer}</span>
-                  {selected !== null && idx === question.correct && (
-                    <CheckCircle2 size={16} className="text-green-500 flex-shrink-0" />
-                  )}
-                  {selected !== null && idx === selected && idx !== question.correct && (
-                    <XCircle size={16} className="text-red-400 flex-shrink-0" />
-                  )}
+                  <span className="flex-1">{answer.text}</span>
                 </button>
               );
             })}
@@ -212,7 +224,7 @@ export default function QuizPage({ params }: Props) {
           </Button>
           <Button
             onClick={handleNext}
-            disabled={selected === null}
+            disabled={selectedLabel === null}
             className="bg-brand-blue hover:bg-blue-400 text-white rounded-full shadow-bubble"
           >
             {current < quiz.questions.length - 1 ? (

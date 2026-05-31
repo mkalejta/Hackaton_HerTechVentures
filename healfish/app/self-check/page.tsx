@@ -1,18 +1,22 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { articles } from "@/lib/mock-data";
 import Link from "next/link";
-import { Search, BookOpen, CalendarDays, Sparkles } from "lucide-react";
+import {
+  Search,
+  BookOpen,
+  Sparkles,
+  AlertCircle,
+  RotateCcw,
+  Stethoscope,
+  MapPin,
+  ExternalLink,
+} from "lucide-react";
+import { api, ApiArticleRef, ApiSpecialist } from "@/lib/api";
+import { selfCheckQuestions, questionsBySection } from "@/lib/self-check-questions";
 
-const presetQuestions = [
-  { id: "fatigue", label: "Czy odczuwasz przewlekłe zmęczenie?" },
-  { id: "weight", label: "Czy masz problemy z utrzymaniem prawidłowej wagi?" },
-  { id: "pain", label: "Czy odczuwasz ból kręgosłupa lub karku?" },
-  { id: "mood", label: "Czy masz wahania nastroju lub problemy ze snem?" },
-  { id: "digestion", label: "Czy masz problemy z trawieniem lub uczucie wzdęcia?" },
-];
+const STORAGE_KEY = "self-check-state";
 
 const fieldColors: Record<string, string> = {
   Endokrynologia: "bg-blue-100 text-blue-700 border-blue-200",
@@ -20,122 +24,289 @@ const fieldColors: Record<string, string> = {
   Fizjoterapia: "bg-orange-100 text-orange-700 border-orange-200",
 };
 
+const sectionIcons: Record<string, string> = {
+  "Aspekty fizyczne i energia": "⚡",
+  "Zdrowie psychiczne i emocjonalne": "🧠",
+  "Codzienne nawyki i profilaktyka": "🥗",
+};
+
+type SavedState = {
+  answers: Record<string, string>;
+  aiAnswer: string | null;
+  apiRefs: ApiArticleRef[];
+  specialists: ApiSpecialist[];
+};
+
+function loadState(): SavedState | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+}
+
+function saveState(state: SavedState) {
+  if (typeof window === "undefined") return;
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+
 export default function SelfCheckPage() {
   const [answers, setAnswers] = useState<Record<string, string>>({});
-  const [extra, setExtra] = useState("");
-  const [results, setResults] = useState<typeof articles | null>(null);
+  const [aiAnswer, setAiAnswer] = useState<string | null>(null);
+  const [apiRefs, setApiRefs] = useState<ApiArticleRef[]>([]);
+  const [specialists, setSpecialists] = useState<ApiSpecialist[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [hydrated, setHydrated] = useState(false);
 
-  const handleSearch = () => {
-    const filled = Object.values(answers).filter(Boolean);
-    if (filled.length === 0 && !extra.trim()) return;
+  // Restore persisted state after hydration
+  useEffect(() => {
+    const saved = loadState();
+    if (saved) {
+      if (saved.answers) setAnswers(saved.answers);
+      if (saved.aiAnswer) setAiAnswer(saved.aiAnswer);
+      if (saved.apiRefs) setApiRefs(saved.apiRefs);
+      if (saved.specialists) setSpecialists(saved.specialists);
+    }
+    setHydrated(true);
+  }, []);
 
-    const hasWeight = answers.weight || extra.toLowerCase().includes("waga");
-    const hasPain = answers.pain || extra.toLowerCase().includes("ból");
+  // Persist on every change (skip first render before hydration)
+  useEffect(() => {
+    if (!hydrated) return;
+    saveState({ answers, aiAnswer, apiRefs, specialists });
+  }, [hydrated, answers, aiAnswer, apiRefs, specialists]);
 
-    let pool = [...articles];
-    if (hasWeight) pool = pool.filter((a) => a.field === "Endokrynologia");
-    else if (hasPain) pool = pool.filter((a) => a.field === "Fizjoterapia");
+  const filledCount = selfCheckQuestions.filter((q) => answers[q.id]?.trim()).length;
+  const hasResults = aiAnswer !== null || apiRefs.length > 0;
 
-    setResults(pool.slice(0, 3));
+  const handleSearch = async () => {
+    if (filledCount === 0) return;
+    setLoading(true);
+    try {
+      const res = await api.selfCheck(answers);
+      setAiAnswer(res.answer);
+      setApiRefs(res.articles);
+      setSpecialists(res.specialists ?? []);
+      setTimeout(() => {
+        document.getElementById("self-check-results")?.scrollIntoView({ behavior: "smooth" });
+      }, 100);
+    } catch {
+      setAiAnswer("Wystąpił błąd. Spróbuj ponownie.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleReset = () => {
+    setAnswers({});
+    setAiAnswer(null);
+    setApiRefs([]);
+    setSpecialists([]);
+    if (typeof window !== "undefined") localStorage.removeItem(STORAGE_KEY);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-      {/* Header frame */}
+      {/* Header */}
       <div className="bg-brand-gradient-soft border border-brand-blue/15 rounded-3xl px-6 py-6 shadow-bubble mb-8">
         <div className="inline-flex items-center gap-2 text-sm text-brand-blue font-medium tile-support border border-brand-blue/20 px-3 py-1 rounded-full mb-3">
           <Search size={14} />
-          Self Check – RAG
+          Self Check
         </div>
-        <h1 className="text-3xl font-bold text-[var(--color-text-title)] mb-2">Sprawdź swoje objawy</h1>
+        <h1 className="text-3xl font-bold text-[var(--color-text-title)] mb-2">
+          Sprawdź, jak się czujesz
+        </h1>
         <p className="text-[color:var(--color-text-body)]">
-          Opisz swoje objawy lub odpowiedz na pytania poniżej. Na podstawie Twoich odpowiedzi
-          dobierzemy artykuły i badania profilaktyczne. Dopasowywanie odbywa się dzięki
-          inteligentnej analizie treści (RAG).
+          Opisz swoje samopoczucie w ostatnich dniach i pomóż nam dopasować dawkę wiedzy
+          specjalnie pod Ciebie! Przeczytaj 3 sugerowane artykuły, rozwiąż quiz i rzuć się na
+          głęboką wodę profilaktyki!
         </p>
       </div>
 
-      {/* Questions – jedno spójne niebieskie obramowanie */}
-      <div className="space-y-3 mb-6">
-        {presetQuestions.map((q) => (
-          <div
-            key={q.id}
-            className="card-gradient rounded-3xl border-2 border-brand-blue/40 shadow-bubble p-5 flex gap-4"
-          >
-            <div className="w-1 rounded-full flex-shrink-0 bg-brand-blue" />
-            <div className="flex-1">
-              <label className="block text-sm font-medium text-[var(--color-text-heading)] mb-2">
-                {q.label}
-              </label>
-              <textarea
-                className="w-full text-sm border border-gray-200 rounded-2xl px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-brand-blue resize-none bg-white/60"
-                rows={2}
-                placeholder="Opisz dokładniej (opcjonalnie)..."
-                value={answers[q.id] || ""}
-                onChange={(e) => setAnswers((prev) => ({ ...prev, [q.id]: e.target.value }))}
-              />
+      {/* Questions grouped by section */}
+      <div className="space-y-8 mb-8">
+        {questionsBySection.map(({ section, questions }) => (
+          <div key={section}>
+            <div className="flex items-center gap-2 mb-4">
+              <span className="text-lg">{sectionIcons[section]}</span>
+              <h2 className="text-base font-semibold text-[var(--color-text-heading)]">{section}</h2>
+            </div>
+            <div className="space-y-3">
+              {questions.map((q) => (
+                <div
+                  key={q.id}
+                  className="card-gradient rounded-3xl border-2 border-brand-blue/40 shadow-bubble p-5 flex gap-4"
+                >
+                  <div className="w-1 rounded-full flex-shrink-0 bg-brand-blue" />
+                  <div className="flex-1">
+                    <label className="block text-sm font-medium text-[var(--color-text-heading)] mb-1">
+                      {q.shortLabel}
+                    </label>
+                    <p className="text-xs text-[color:var(--color-text-muted)] mb-2 leading-relaxed">
+                      {q.fullLabel}
+                    </p>
+                    <textarea
+                      className="w-full text-sm border border-gray-200 rounded-2xl px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-brand-blue resize-none bg-white/60"
+                      rows={2}
+                      placeholder={q.placeholder}
+                      value={answers[q.id] ?? ""}
+                      onChange={(e) =>
+                        setAnswers((prev) => ({ ...prev, [q.id]: e.target.value }))
+                      }
+                    />
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         ))}
-
-        <div className="card-gradient rounded-3xl border-2 border-brand-blue/40 shadow-bubble p-5 flex gap-4">
-          <div className="w-1 rounded-full flex-shrink-0 bg-brand-blue" />
-          <div className="flex-1">
-            <label className="block text-sm font-medium text-[var(--color-text-heading)] mb-2">
-              Inne objawy lub uwagi
-            </label>
-            <textarea
-              className="w-full text-sm border border-gray-200 rounded-2xl px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-brand-blue resize-none bg-white/60"
-              rows={3}
-              placeholder="Opisz dowolne inne objawy..."
-              value={extra}
-              onChange={(e) => setExtra(e.target.value)}
-            />
-          </div>
-        </div>
       </div>
 
-      <Button
-        onClick={handleSearch}
-        className="bg-brand-blue hover:bg-blue-400 text-white rounded-full px-8 mb-10 shadow-bubble"
-      >
-        <Search size={16} className="mr-2" />
-        Znajdź dopasowane artykuły
-      </Button>
+      {/* Submit + Reset */}
+      <div className="flex items-center gap-3 mb-10 flex-wrap">
+        <Button
+          onClick={handleSearch}
+          disabled={loading || filledCount === 0}
+          className="bg-brand-blue hover:bg-blue-400 text-white rounded-full px-8 shadow-bubble"
+        >
+          <Search size={16} className="mr-2" />
+          {loading ? "Analizuję..." : "Znajdź artykuły i specjalistów"}
+        </Button>
+        {(filledCount > 0 || hasResults) && !loading && (
+          <Button
+            variant="outline"
+            onClick={handleReset}
+            className="rounded-full px-5 text-[color:var(--color-text-muted)] border-gray-200 hover:text-red-500 hover:border-red-200"
+          >
+            <RotateCcw size={14} className="mr-1.5" />
+            Wyczyść
+          </Button>
+        )}
+        {filledCount > 0 && !loading && (
+          <span className="text-xs text-[color:var(--color-text-muted)]">
+            {filledCount}/{selfCheckQuestions.length} odpowiedzi
+          </span>
+        )}
+      </div>
 
-      {results !== null && (
-        <div>
-          {/* Results header in frame */}
-          <div className="tile-blend rounded-3xl px-5 py-3 mb-5 border border-white/50 shadow-sm inline-flex items-center gap-2">
-            <Sparkles size={16} className="text-teal-600" />
-            <h2 className="text-sm font-semibold text-[var(--color-text-heading)]">
-              Dopasowane artykuły ({results.length})
-            </h2>
+      {/* Results */}
+      {hasResults && (
+        <div id="self-check-results" className="space-y-8">
+          {/* Summary */}
+          {aiAnswer && (
+            <div>
+              <div className="tile-blend rounded-3xl px-5 py-3 mb-4 border border-white/50 shadow-sm inline-flex items-center gap-2">
+                <Sparkles size={16} className="text-teal-600" />
+                <h2 className="text-sm font-semibold text-[var(--color-text-heading)]">
+                  Twoje podsumowanie
+                </h2>
+              </div>
+              <div className="bg-white rounded-3xl border border-brand-blue/20 shadow-bubble p-5">
+                <div className="flex items-start gap-3 mb-3 pb-3 border-b border-gray-100">
+                  <AlertCircle size={16} className="text-amber-500 flex-shrink-0 mt-0.5" />
+                  <p className="text-xs text-[color:var(--color-text-muted)]">
+                    To nie jest diagnoza medyczna — poniższe podsumowanie opiera się wyłącznie na
+                    Twoich subiektywnych odczuciach. Wszelkie decyzje zdrowotne skonsultuj z
+                    lekarzem.
+                  </p>
+                </div>
+                <p className="text-sm text-[color:var(--color-text-body)] whitespace-pre-wrap leading-relaxed">
+                  {aiAnswer}
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* Articles */}
+          <div>
+            <div className="tile-blend rounded-3xl px-5 py-3 mb-4 border border-white/50 shadow-sm inline-flex items-center gap-2">
+              <BookOpen size={16} className="text-brand-blue" />
+              <h2 className="text-sm font-semibold text-[var(--color-text-heading)]">
+                Dopasowane artykuły ({apiRefs.length})
+              </h2>
+            </div>
+
+            {apiRefs.length === 0 ? (
+              <p className="text-[color:var(--color-text-muted)] text-sm">
+                Nie znaleziono dopasowań. Spróbuj opisać więcej szczegółów.
+              </p>
+            ) : (
+              <div className="space-y-4">
+                {apiRefs.map((ref) => (
+                  <Link key={ref.slug} href={`/artykuly/${ref.slug}`} className="group block">
+                    <div className="bg-white rounded-3xl border border-gray-100 shadow-bubble hover:shadow-bubble-hover transition-all hover:-translate-y-0.5 p-5 flex flex-col gap-2">
+                      <span
+                        className={`text-xs font-medium px-2.5 py-0.5 rounded-full self-start border ${
+                          fieldColors[ref.specialization] ??
+                          "bg-gray-100 text-gray-700 border-gray-200"
+                        }`}
+                      >
+                        {ref.specialization}
+                      </span>
+                      <h3 className="font-semibold text-[var(--color-text-heading)] group-hover:text-brand-blue transition-colors">
+                        {ref.title}
+                      </h3>
+                      <div className="flex items-center gap-4 text-xs text-[color:var(--color-text-muted)] mt-1">
+                        <span className="flex items-center gap-1">
+                          <BookOpen size={11} /> {ref.author}
+                        </span>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            )}
           </div>
 
-          {results.length === 0 ? (
-            <p className="text-[color:var(--color-text-muted)] text-sm">
-              Nie znaleziono dopasowań. Spróbuj opisać więcej objawów.
-            </p>
-          ) : (
-            <div className="space-y-4">
-              {results.map((article) => (
-                <Link key={article.id} href={`/artykuly/${article.slug}`} className="group block">
-                  <div className="bg-white rounded-3xl border border-gray-100 shadow-bubble hover:shadow-bubble-hover transition-all hover:-translate-y-0.5 p-5 flex flex-col gap-2">
-                    <span className={`text-xs font-medium px-2.5 py-0.5 rounded-full self-start border ${fieldColors[article.field]}`}>
-                      {article.field}
-                    </span>
-                    <h3 className="font-semibold text-[var(--color-text-heading)] group-hover:text-brand-blue transition-colors">
-                      {article.title}
-                    </h3>
-                    <p className="text-sm text-[color:var(--color-text-body)] line-clamp-2">{article.excerpt}</p>
-                    <div className="flex items-center gap-4 text-xs text-[color:var(--color-text-muted)] mt-1">
-                      <span className="flex items-center gap-1"><BookOpen size={11} /> {article.author.name}</span>
-                      <span className="flex items-center gap-1"><CalendarDays size={11} /> {new Date(article.date).toLocaleDateString("pl-PL")}</span>
+          {/* Specialist tiles */}
+          {specialists.length > 0 && (
+            <div>
+              <div className="tile-blend rounded-3xl px-5 py-3 mb-4 border border-white/50 shadow-sm inline-flex items-center gap-2">
+                <Stethoscope size={16} className="text-brand-blue" />
+                <h2 className="text-sm font-semibold text-[var(--color-text-heading)]">
+                  Specjaliści w Twoim rejonie
+                </h2>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {specialists.map((s) => (
+                  <div
+                    key={s.id}
+                    className="bg-white rounded-3xl border border-gray-100 shadow-bubble p-4 flex flex-col gap-3"
+                  >
+                    <div className="w-10 h-10 rounded-2xl bg-brand-blue/10 flex items-center justify-center">
+                      <Stethoscope size={18} className="text-brand-blue" />
                     </div>
+                    <div>
+                      <p className="font-semibold text-[var(--color-text-heading)] text-sm leading-snug">
+                        {s.name}
+                      </p>
+                      <span
+                        className={`inline-block mt-1 text-xs font-medium px-2 py-0.5 rounded-full border ${
+                          fieldColors[s.specialization] ??
+                          "bg-gray-100 text-gray-700 border-gray-200"
+                        }`}
+                      >
+                        {s.specialization}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-1 text-xs text-[color:var(--color-text-muted)]">
+                      <MapPin size={11} />
+                      {s.location}
+                    </div>
+                    <a
+                      href={s.znany_lekarz_url ?? "https://www.znany-lekarz.pl"}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-auto flex items-center gap-1 text-xs font-medium text-brand-blue hover:underline"
+                    >
+                      Umów wizytę <ExternalLink size={11} />
+                    </a>
                   </div>
-                </Link>
-              ))}
+                ))}
+              </div>
             </div>
           )}
         </div>

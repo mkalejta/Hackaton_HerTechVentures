@@ -3,62 +3,93 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Eye, EyeOff } from "lucide-react";
+import { api } from "@/lib/api";
+import { useAuth } from "@/lib/auth-context";
 
 export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [newsletter, setNewsletter] = useState(false);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
+  const { login } = useAuth();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    try {
+      const { access_token } = await api.register({ first_name: firstName, last_name: lastName, email, password, newsletter });
+      await login(access_token);
+      router.push("/");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Błąd rejestracji");
+    }
+  };
 
   return (
     <div className="min-h-[80vh] flex items-center justify-center px-4 py-12">
-      {/* Background blobs */}
       <div
         className="fixed -top-32 -right-32 w-96 h-96 rounded-full opacity-20 blur-3xl pointer-events-none"
         style={{ background: "radial-gradient(circle, #63B4F6, #81E291)" }}
       />
 
       <div className="w-full max-w-md relative">
+        <div className="text-center mb-4">
+          <Image
+            src="/images/logo.png"
+            alt="Healfish"
+            width={128}
+            height={128}
+            className="w-32 h-32 mx-auto rounded-3xl shadow-bubble object-cover"
+          />
+        </div>
+
         <div className="text-center mb-6">
-          <div className="bg-white/70 border border-gray-200 rounded-3xl px-6 py-5 shadow-bubble inline-block">
-            <Image
-              src="/images/ujecia-ryby-hybby/ujecie2.png"
-              alt="Healfish"
-              width={72}
-              height={72}
-              className="w-16 h-16 mx-auto mb-2 rounded-2xl object-cover"
-            />
-            <Image
-              src="/images/logo-napisy/healfish morski.png"
-              alt="Healfish"
-              width={130}
-              height={44}
-              className="h-8 w-auto mx-auto mb-3"
-            />
-            <h1 className="text-2xl font-bold text-[var(--color-text-title)]">Utwórz konto</h1>
-            <p className="text-[color:var(--color-text-secondary)] text-sm mt-1">
-              Dołącz do Healfish – za darmo, bez zobowiązań.
-            </p>
-          </div>
+          <h1 className="text-2xl font-bold text-[var(--color-text-title)]">Utwórz konto</h1>
+          <p className="text-[color:var(--color-text-secondary)] text-sm mt-1">
+            Dołącz do Healfish – za darmo, bez zobowiązań.
+          </p>
         </div>
 
         <div className="bg-white rounded-3xl shadow-bubble border border-gray-100 p-8">
-          <form className="space-y-5">
+          <form className="space-y-5" onSubmit={handleSubmit}>
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-[var(--color-text-heading)] mb-1.5">Imię</label>
-                <Input placeholder="Jan" className="rounded-2xl" />
+                <Input
+                  placeholder="Jan"
+                  className="rounded-2xl"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                />
               </div>
               <div>
                 <label className="block text-sm font-medium text-[var(--color-text-heading)] mb-1.5">Nazwisko</label>
-                <Input placeholder="Kowalski" className="rounded-2xl" />
+                <Input
+                  placeholder="Kowalski"
+                  className="rounded-2xl"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                />
               </div>
             </div>
 
             <div>
               <label className="block text-sm font-medium text-[var(--color-text-heading)] mb-1.5">Adres email</label>
-              <Input type="email" placeholder="jan.kowalski@email.pl" className="rounded-2xl" />
+              <Input
+                type="email"
+                placeholder="jan.kowalski@email.pl"
+                className="rounded-2xl"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
             </div>
 
             <div>
@@ -68,6 +99,8 @@ export default function RegisterPage() {
                   type={showPassword ? "text" : "password"}
                   placeholder="Minimum 8 znaków"
                   className="pr-10 rounded-2xl"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                 />
                 <button
                   type="button"
@@ -79,7 +112,6 @@ export default function RegisterPage() {
               </div>
             </div>
 
-            {/* Newsletter in a soft frame */}
             <label className="flex items-start gap-3 cursor-pointer bg-brand-support/30 border border-brand-blue/15 rounded-2xl p-3">
               <input
                 type="checkbox"
@@ -98,6 +130,8 @@ export default function RegisterPage() {
             >
               Zarejestruj się
             </Button>
+
+            {error && <p className="text-red-500 text-sm text-center mt-2">{error}</p>}
           </form>
 
           <p className="text-center text-sm text-[color:var(--color-text-secondary)] mt-6">

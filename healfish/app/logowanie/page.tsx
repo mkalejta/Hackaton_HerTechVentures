@@ -3,16 +3,35 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Eye, EyeOff } from "lucide-react";
+import { api } from "@/lib/api";
+import { useAuth } from "@/lib/auth-context";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
+  const { login } = useAuth();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    try {
+      const { access_token } = await api.login(email, password);
+      await login(access_token);
+      router.push("/");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Błąd logowania");
+    }
+  };
 
   return (
     <div className="min-h-[80vh] flex items-center justify-center px-4 py-12">
-      {/* Background blobs */}
       <div
         className="fixed -top-32 -right-32 w-96 h-96 rounded-full opacity-20 blur-3xl pointer-events-none"
         style={{ background: "radial-gradient(circle, #63B4F6, #81E291)" }}
@@ -23,33 +42,25 @@ export default function LoginPage() {
       />
 
       <div className="w-full max-w-md relative">
-        {/* Header frame */}
-        <div className="text-center mb-6">
-          <div className="bg-white/70 border border-gray-200 rounded-3xl px-6 py-5 shadow-bubble inline-block">
-            <Image
-              src="/images/ujecia-ryby-hybby/ujecie2.png"
-              alt="Healfish"
-              width={72}
-              height={72}
-              className="w-16 h-16 mx-auto mb-2 rounded-2xl object-cover"
-            />
-            <Image
-              src="/images/logo-napisy/healfish morski.png"
-              alt="Healfish"
-              width={130}
-              height={44}
-              className="h-8 w-auto mx-auto mb-3"
-            />
-            <h1 className="text-2xl font-bold text-[var(--color-text-title)]">Zaloguj się</h1>
-            <p className="text-[color:var(--color-text-secondary)] text-sm mt-1">
-              Witaj z powrotem!
-            </p>
-          </div>
+        <div className="text-center mb-4">
+          <Image
+            src="/images/logo.png"
+            alt="Healfish"
+            width={128}
+            height={128}
+            className="w-32 h-32 mx-auto rounded-3xl shadow-bubble object-cover"
+          />
         </div>
 
-        {/* Form in frame */}
+        <div className="text-center mb-6">
+          <h1 className="text-2xl font-bold text-[var(--color-text-title)]">Zaloguj się</h1>
+          <p className="text-[color:var(--color-text-secondary)] text-sm mt-1">
+            Witaj z powrotem!
+          </p>
+        </div>
+
         <div className="bg-white rounded-3xl shadow-bubble border border-gray-100 p-8">
-          <form className="space-y-5">
+          <form className="space-y-5" onSubmit={handleSubmit}>
             <div>
               <label className="block text-sm font-medium text-[var(--color-text-heading)] mb-1.5">
                 Adres email
@@ -58,6 +69,8 @@ export default function LoginPage() {
                 type="email"
                 placeholder="jan.kowalski@email.pl"
                 className="w-full rounded-2xl"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
 
@@ -70,6 +83,8 @@ export default function LoginPage() {
                   type={showPassword ? "text" : "password"}
                   placeholder="••••••••"
                   className="w-full pr-10 rounded-2xl"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                 />
                 <button
                   type="button"
@@ -87,6 +102,8 @@ export default function LoginPage() {
             >
               Zaloguj się
             </Button>
+
+            {error && <p className="text-red-500 text-sm text-center mt-2">{error}</p>}
           </form>
 
           <p className="text-center text-sm text-[color:var(--color-text-secondary)] mt-6">

@@ -1,27 +1,33 @@
-import { articles } from "@/lib/mock-data";
-import { notFound } from "next/navigation";
+"use client";
+
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import { CalendarDays, ExternalLink, BookOpen, Brain, MapPin } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { api, ApiArticleDetail } from "@/lib/api";
 
-type Props = { params: { slug: string } };
+export default function ArticlePage() {
+  const { slug } = useParams<{ slug: string }>();
+  const [article, setArticle] = useState<ApiArticleDetail | null>(null);
+  const [notFoundState, setNotFoundState] = useState(false);
 
-export default async function ArticlePage({ params }: Props) {
-  const { slug } = params;
-  const article = articles.find((a) => a.slug === slug);
-  if (!article) notFound();
+  useEffect(() => {
+    api.getArticle(slug).then(setArticle).catch(() => setNotFoundState(true));
+  }, [slug]);
+
+  if (notFoundState) return <div className="text-center py-20">Artykuł nie znaleziony.</div>;
+  if (!article) return <div className="text-center py-20">Ładowanie...</div>;
 
   return (
     <>
-      {/* Header */}
       <div className="bg-brand-gradient-soft py-10 border-b border-gray-100">
         <div className="max-w-3xl mx-auto px-4 sm:px-6">
           <div className="inline-flex items-center gap-2 text-sm text-brand-blue font-medium tile-support px-3 py-1 rounded-full mb-4 border border-brand-blue/20">
             <BookOpen size={14} />
-            {article.field}
+            {article.specialization}
           </div>
-          {/* Title in frame */}
           <div className="bg-white/70 border border-gray-200/70 rounded-3xl px-6 py-5 shadow-bubble">
             <h1 className="text-3xl font-bold text-[var(--color-text-title)] mb-3 leading-snug">
               {article.title}
@@ -29,12 +35,12 @@ export default async function ArticlePage({ params }: Props) {
             <div className="flex flex-wrap gap-4 text-sm text-[color:var(--color-text-secondary)]">
               <span className="flex items-center gap-1.5">
                 <CalendarDays size={14} />
-                Opublikowano: {new Date(article.date).toLocaleDateString("pl-PL")}
+                Opublikowano: {new Date(article.published_at).toLocaleDateString("pl-PL")}
               </span>
-              {article.modifiedDate && (
+              {article.updated_at && (
                 <span className="flex items-center gap-1.5">
                   <CalendarDays size={14} />
-                  Aktualizacja: {new Date(article.modifiedDate).toLocaleDateString("pl-PL")}
+                  Aktualizacja: {new Date(article.updated_at).toLocaleDateString("pl-PL")}
                 </span>
               )}
             </div>
@@ -43,18 +49,17 @@ export default async function ArticlePage({ params }: Props) {
       </div>
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-10">
-        {/* Author card */}
         <div className="tile-green rounded-3xl p-5 mb-8 flex items-center justify-between flex-wrap gap-4 border border-white/50 shadow-bubble">
           <div>
-            <p className="font-semibold text-[var(--color-text-heading)]">{article.author.name}</p>
-            <p className="text-sm text-[color:var(--color-text-body)]">{article.author.specialization}</p>
+            <p className="font-semibold text-[var(--color-text-heading)]">{article.author_first_name} {article.author_last_name}</p>
+            <p className="text-sm text-[color:var(--color-text-body)]">{article.author_specialization}</p>
             <div className="flex items-center gap-1 text-xs text-[color:var(--color-text-secondary)] mt-1">
               <MapPin size={11} />
-              {article.author.location}
+              {article.author_location}
             </div>
           </div>
           <a
-            href={article.author.znanyLekarzUrl}
+            href={article.znany_lekarz_url ?? "#"}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-1.5 text-sm text-brand-blue font-medium hover:underline"
@@ -63,7 +68,6 @@ export default async function ArticlePage({ params }: Props) {
           </a>
         </div>
 
-        {/* Article content – ciągły tekst */}
         <div className="mb-10 space-y-4">
           {article.content.split("\n").map((line, i) => {
             if (line.startsWith("## ")) {
@@ -96,11 +100,10 @@ export default async function ArticlePage({ params }: Props) {
           })}
         </div>
 
-        {/* Links */}
         <div className="flex flex-wrap gap-3 mb-8">
-          {article.studyUrl && (
+          {article.source_url && (
             <a
-              href={article.studyUrl}
+              href={article.source_url}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 text-sm bg-white border border-gray-200 rounded-full px-4 py-2 hover:border-brand-blue transition-colors shadow-sm"
@@ -109,9 +112,9 @@ export default async function ArticlePage({ params }: Props) {
               Źródło naukowe
             </a>
           )}
-          {article.relatedQuizSlug && (
+          {article.quiz_slug && (
             <Link
-              href={`/quizy/${article.relatedQuizSlug}`}
+              href={`/quizy/${article.quiz_slug}`}
               className="flex items-center gap-2 text-sm tile-support border border-brand-blue/20 rounded-full px-4 py-2 hover:bg-brand-support transition-colors shadow-sm"
             >
               <Brain size={14} className="text-brand-blue" />
@@ -120,18 +123,17 @@ export default async function ArticlePage({ params }: Props) {
           )}
         </div>
 
-        {/* CTA */}
         <div className="bg-brand-gradient-soft rounded-3xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4 border border-brand-blue/10 shadow-bubble">
           <div>
             <p className="font-semibold text-[var(--color-text-heading)]">
-              Chcesz skonsultować się z {article.author.name}?
+              Chcesz skonsultować się z {article.author_first_name} {article.author_last_name}?
             </p>
             <p className="text-sm text-[color:var(--color-text-secondary)]">
               Umów wizytę przez Znany Lekarz
             </p>
           </div>
           <a
-            href={article.author.znanyLekarzUrl}
+            href={article.znany_lekarz_url ?? "#"}
             target="_blank"
             rel="noopener noreferrer"
             className={cn(
@@ -143,11 +145,6 @@ export default async function ArticlePage({ params }: Props) {
           </a>
         </div>
       </div>
-
     </>
   );
-}
-
-export async function generateStaticParams() {
-  return articles.map((a) => ({ slug: a.slug }));
 }

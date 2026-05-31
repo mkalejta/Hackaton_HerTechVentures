@@ -13,6 +13,7 @@ from pydantic import BaseModel, EmailStr
 from openai import OpenAI
 
 from rag import search_similar_chunks
+from self_check_questions import format_questions_for_prompt, get_question_label
 
 OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1"
 
@@ -21,7 +22,7 @@ app = FastAPI(title="HealFish API")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
-    allow_credentials=True,
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -67,9 +68,10 @@ def get_current_user(token: str = Depends(oauth2_scheme)) -> Optional[dict]:
         return None
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        user_id: int = payload.get("sub")
-        if user_id is None:
+        sub = payload.get("sub")
+        if sub is None:
             return None
+        user_id = int(sub)
     except JWTError:
         return None
     conn = get_conn()
@@ -109,7 +111,7 @@ class TokenResponse(BaseModel):
 
 
 class SelfCheckRequest(BaseModel):
-    answers: list[str]
+    answers: dict[str, str]  # question_id -> answer text
 
 
 class QuizAttemptRequest(BaseModel):
@@ -139,7 +141,7 @@ def register(body: RegisterRequest):
         conn.commit()
     finally:
         conn.close()
-    token = create_access_token({"sub": user_id})
+    token = create_access_token({"sub": str(user_id)})
     return {"access_token": token}
 
 
@@ -154,7 +156,7 @@ def login(form: OAuth2PasswordRequestForm = Depends()):
         conn.close()
     if not user or not verify_password(form.password, user["password_hash"]):
         raise HTTPException(status_code=400, detail="Invalid credentials")
-    token = create_access_token({"sub": user["id"]})
+    token = create_access_token({"sub": str(user["id"])})
     return {"access_token": token}
 
 
@@ -191,6 +193,7 @@ def list_articles(
                 SELECT
                     a.id, a.slug, a.title, a.specialization, a.published_at, a.updated_at,
                     a.source_url, a.quiz_slug, a.for_women,
+                    LEFT(a.content, 300) AS excerpt,
                     au.first_name AS author_first_name, au.last_name AS author_last_name,
                     au.specialization AS author_specialization, au.location AS author_location,
                     au.znany_lekarz_url
@@ -256,7 +259,7 @@ def list_quizzes(specialization: Optional[str] = None, for_women: Optional[bool]
             cur.execute(
                 f"""
                 SELECT q.id, q.slug, q.title, q.passing_score, q.points_reward, q.is_active,
-                       a.slug AS article_slug, a.specialization, a.for_women
+                       a.slug AS article_slug, a.specialization, a.for_women, a.published_at AS date
                 FROM quizzes q
                 JOIN articles a ON q.article_id = a.id
                 {where}
@@ -278,7 +281,7 @@ def get_quiz(slug: str):
             cur.execute(
                 """
                 SELECT q.id, q.slug, q.title, q.passing_score, q.points_reward, q.is_active,
-                       a.slug AS article_slug, a.specialization, a.for_women
+                       a.slug AS article_slug, a.specialization, a.for_women, a.published_at AS date
                 FROM quizzes q
                 JOIN articles a ON q.article_id = a.id
                 WHERE q.slug = %s
@@ -402,9 +405,23 @@ def submit_quiz(quiz_slug: str, body: QuizAttemptRequest, user=Depends(require_u
 
 @app.post("/self-check")
 def self_check(body: SelfCheckRequest):
-    query = " ".join(body.answers)
+    # Build query from filled answers with question context
+    answer_parts = []
+    user_answers_lines = []
+    for q_id, answer in body.answers.items():
+        if answer.strip():
+            label = get_question_label(q_id)
+            answer_parts.append(f"{label}: {answer}")
+            user_answers_lines.append(f"- {label}\n  Odpowiedź: {answer}")
+
+    query = " ".join(answer_parts) if answer_parts else " ".join(body.answers.values())
     all_chunks, article_refs = search_similar_chunks(query, top_k=5)
     context = "\n\n".join(c["chunk_text"] for c in all_chunks)
+
+    questions_context = format_questions_for_prompt()
+    user_answers_formatted = "\n".join(user_answers_lines) if user_answers_lines else "(brak odpowiedzi)"
+
+    article_titles = "\n".join(f"- {a['title']}" for a in article_refs)
 
     response = openai_client.chat.completions.create(
         model="gpt-4o-mini",
@@ -412,17 +429,48 @@ def self_check(body: SelfCheckRequest):
             {
                 "role": "system",
                 "content": (
-                    "Jesteś asystentem zdrowotnym. Odpowiadaj po polsku, "
-                    "wyłącznie na podstawie podanego kontekstu z artykułów medycznych. "
-                    "Nie udzielaj diagnozy — zachęcaj do konsultacji ze specjalistą."
+                    "Jesteś asystentem zdrowotnym aplikacji HealFish. "
+                    "Twoje zadanie to napisanie krótkiego, ciepłego podsumowania dla użytkownika "
+                    "na podstawie jego odpowiedzi w kwestionariuszu self-check.\n\n"
+                    "BEZWZGLĘDNE ZASADY:\n"
+                    "1. Zaznacz wprost na początku, że to NIE jest diagnoza medyczna — to wyłącznie subiektywne podsumowanie odczuć użytkownika\n"
+                    "2. Nie sugeruj konkretnych chorób ani schorzeń\n"
+                    "3. Wspomnij o dopasowanych artykułach (wymień je z tytułu) i zachęć do ich przeczytania\n"
+                    "4. Zachęć do umówienia się na profilaktyczne badania u specjalisty w okolicy\n"
+                    "5. Pisz ciepło i motywująco, maksymalnie 5 zdań\n"
+                    "6. Odpowiadaj wyłącznie po polsku\n\n"
+                    f"Pytania kwestionariusza self-check (kontekst):\n{questions_context}"
                 ),
             },
             {
                 "role": "user",
-                "content": f"Kontekst:\n{context}\n\nPytanie / objawy: {query}",
+                "content": (
+                    f"Odpowiedzi użytkownika:\n{user_answers_formatted}\n\n"
+                    f"Artykuły dopasowane przez RAG:\n{article_titles}\n\n"
+                    f"Fragmenty artykułów (kontekst wiedzy):\n{context}"
+                ),
             },
         ],
     )
+
+    # Fetch Trójmiasto specialists matching the found article specializations
+    matched_specializations = list({a["specialization"] for a in article_refs})
+    conn = get_conn()
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                """
+                SELECT id, first_name, last_name, specialization, location, znany_lekarz_url
+                FROM authors
+                WHERE location IN ('Gdańsk', 'Gdynia')
+                  AND specialization = ANY(%s)
+                ORDER BY specialization, location, id
+                """,
+                (matched_specializations,),
+            )
+            specialists = [dict(r) for r in cur.fetchall()]
+    finally:
+        conn.close()
 
     return {
         "answer": response.choices[0].message.content,
@@ -435,6 +483,16 @@ def self_check(body: SelfCheckRequest):
                 "similarity": a["similarity"],
             }
             for a in article_refs
+        ],
+        "specialists": [
+            {
+                "id": s["id"],
+                "name": f"{s['first_name']} {s['last_name']}",
+                "specialization": s["specialization"],
+                "location": s["location"],
+                "znany_lekarz_url": s["znany_lekarz_url"],
+            }
+            for s in specialists
         ],
     }
 
