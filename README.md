@@ -1,5 +1,9 @@
 # HealFish
 
+<p align="center">
+  <img src="images/ryba%20hybba.png" alt="Hybba – maskotka HealFish" width="200"/>
+</p>
+
 Edukacyjno-profilaktyczna platforma zdrowotna zbudowana podczas **HTV Hackathon** (HerTechVentures Hackathon, 30–31 maja 2026, Uniwersytet Gdański). Pomaga użytkownikom odnajdywać wiarygodne artykuły medyczne, rozwiązywać quizy i zamieniać zdobyte punkty na zniżki na wizyty profilaktyczne.
 
 ## Problem
@@ -7,6 +11,8 @@ Edukacyjno-profilaktyczna platforma zdrowotna zbudowana podczas **HTV Hackathon*
 Ludzie po 30. roku życia często bagatelizują codzienne objawy i nie mają wyrobionego nawyku profilaktyki. Brakuje im ujednoliconego, wiarygodnego źródła informacji zdrowotnych, a strach lub wstyd powstrzymują ich przed wizytą u lekarza.
 
 ## Rozwiązanie
+
+<img src="images/ujecia-ryby-hybby/ujecie2.png" alt="Hybba" width="130" align="right"/>
 
 HealFish łączy trzy mechanizmy:
 
@@ -179,3 +185,11 @@ Pełna dokumentacja interaktywna: http://localhost:8000/docs
 ## Dane testowe
 
 Projekt zawiera preładowane artykuły w `data/articles/` (ortopedia, fizjoterapia, kardiologia, ginekologia) oraz gotowe quizy w `data/quizes/`. Po uruchomieniu skryptu indeksowania są one dostępne przez Self-Check.
+
+---
+
+<p align="center">
+  <img src="images/rybbs.png" alt="Hybba" width="100"/>
+  <br/>
+  <em>Dbaj o siebie z Hybbą!</em>
+</p>
