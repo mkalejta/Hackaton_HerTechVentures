@@ -118,8 +118,8 @@ Skrypt uruchamia `build_knowledge_base.py` wewnątrz kontenera backendu — dzie
 Lekarze publikują artykuły zdrowotne po zalogowaniu się na konto lekarza. Artykuł jest przypisany do specjalizacji i może być oznaczony flagą „dla kobiet".
 
 ### Quizy
-- 10 pytań ABCD na podstawie konkretnego artykułu
-- Próg zdawalności: 70%
+- od 3 do 5 pytań ABCD na podstawie konkretnego artykułu
+- Próg zdawalności: 2/3 pytań (≈ 67%)
 - Maks. 3 próby dziennie na quiz
 - Po zaliczeniu: +100 punktów na konto (jednorazowo)
 
