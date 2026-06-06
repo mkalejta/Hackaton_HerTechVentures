@@ -1,0 +1,13 @@
+---
+article_slug: wplyw-plci-farmakokinetyka
+source_url: http://media.statsoft.nazwa.pl/_old_dnn/downloads/wplyw_plci.pdf
+---
+
+Konieczna i Lamparczyk, 2008 — Wpływ płci na farmakokinetykę wybranych leków
+
+Opracowanie o tym, że płeć znacząco wpływa na to, jak organizm wchłania, przetwarza i wydala leki.
+
+Pełna nazwa badania: Wpływ płci na farmakokinetykę wybranych leków, Zastosowania metod statystycznych w badaniach naukowych III, 2008.
+Link do pełnego tekstu: http://media.statsoft.nazwa.pl/_old_dnn/downloads/wplyw_plci.pdf
+
+Badanie analizowało różnice w przyswajaniu i działaniu leków między kobietami a mężczyznami. Wyniki potwierdziły, że kobiece organizmy inaczej wchłaniają, dystrybuują, metabolizują i wydalają substancje lecznicze (wynika to m.in. z innej proporcji tkanki tłuszczowej, kwasowości żołądka, aktywności enzymów wątrobowych czy tempa filtracji nerkowej). W efekcie kobiety mogą mieć znacznie wyższe stężenie niektórych leków (np. imipraminy) we krwi niż mężczyźni, przyjmując dokładnie tę samą dawkę. Badanie dowodzi, że uwzględnianie płci w badaniach klinicznych i wytycznych medycznych jest absolutnie konieczne dla zapewnienia bezpiecznego i skutecznego leczenia.

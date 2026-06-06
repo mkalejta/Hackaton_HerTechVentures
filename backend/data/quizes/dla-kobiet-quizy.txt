@@ -1,0 +1,96 @@
+---
+quiz_slug: quiz-nierownosci-plci-badania-medyczne
+article_slug: nierownosci-plci-badania-medyczne
+title: Nierówności płci w badaniach medycznych
+passing_score: 70
+points: 100
+---
+
+Pytanie 1:
+Z jakiego głównego powodu, według raportu, w naszej wiedzy medycznej istnieją poważne luki dotyczące wpływu leczenia na kobiety?
+A) Z powodu zbyt małej liczby badaczy i profesorów w szkołach medycznych w Unii Europejskiej.
+B) Z powodu historycznego wykluczania kobiet z badań klinicznych i uogólniania na nie wyników uzyskanych z badań na mężczyznach.
+C) Ponieważ kobiety rzadziej zgłaszają się do lekarza, co uniemożliwia zebranie odpowiedniej ilości danych.
+D) Z powodu braku odpowiedniego sprzętu diagnostycznego w placówkach medycznych.
+Odpowiedź: B
+
+Pytanie 2:
+Jakie innowacyjne narzędzie zaleca opracować raport w celu lepszej profilaktyki i oceny chorób układu krążenia u kobiet?
+A) Uniwersalny, neutralny płciowo system dawkowania leków kardiologicznych.
+B) Obowiązkowe badania genetyczne dla kobiet po 50. roku życia.
+C) Kalkulator ryzyka sercowo-naczyniowego dostosowany do fizjologii kobiet i czynników na poszczególnych etapach ich życia.
+D) Aplikację mobilną zachęcającą kobiety migrujące do codziennej aktywności fizycznej.
+Odpowiedź: C
+
+Pytanie 3:
+Do jakiej grupy w szczególności powinny być kierowane działania informacyjne dotyczące mięśniaków macicy, aby skutecznie zwiększyć świadomość na ich temat?
+A) Wyłącznie do lekarzy ginekologów oraz studentów uczelni medycznych.
+B) Do kobiet, które przeszły już menopauzę oraz przebyły operacje ginekologiczne.
+C) Do urzędników Unii Europejskiej odpowiedzialnych za finansowanie badań.
+D) Do społeczności o niższym statusie społeczno-ekonomicznym i ograniczonym poziomie wykształcenia.
+Odpowiedź: D
+
+Pytanie 4:
+Co, zgodnie z zaleceniami raportu, należy włączyć do przygotowania przed porodem i opieki poporodowej, aby zapobiegać nietrzymaniu moczu i obniżeniu narządów miednicy mniejszej?
+A) Rutynowe i obowiązkowe zabiegi chirurgiczne wykonywane zaraz po porodzie.
+B) Ćwiczenia mięśni dna miednicy.
+C) Systematyczne badania za pomocą innowacyjnych urządzeń urologicznych.
+D) Uniwersalną farmakoterapię wdrażaną już w pierwszym trymestrze ciąży.
+Odpowiedź: B
+
+Pytanie 5:
+Jakie wspólne działanie we wszystkich państwach członkowskich UE zaleca raport w odniesieniu do zjawiska przemocy położniczej i ginekologicznej?
+A) Zwiększenie kar finansowych dla placówek medycznych dopuszczających się takich czynów.
+B) Zainstalowanie monitoringu wizyjnego na salach porodowych.
+C) Ujednolicenie definicji, terminologii oraz ram prawnych dotyczących tego zjawiska.
+D) Całkowite oddzielenie oddziałów położniczych od uroginekologicznych w szpitalach.
+Odpowiedź: C
+
+
+---
+quiz_slug: quiz-wplyw-plci-farmakokinetyka
+article_slug: wplyw-plci-farmakokinetyka
+title: Wpływ płci na farmakokinetykę leków
+passing_score: 70
+points: 100
+---
+
+Pytanie 1:
+W jaki sposób amerykańska Agencja ds. Żywności i Leków (FDA) postanowiła zapobiec nieprzewidzianym skutkom ubocznym leków u pacjentek?
+A) Nakazała stworzenie osobnych linii produkcyjnych dla "kobiecych" odpowiedników każdego leku.
+B) Wymusiła bezwzględne włączenie kobiet do badań klinicznych i zapowiedziała brak rejestracji nowych leków bez udziału obu płci.
+C) Wprowadziła całkowity zakaz przepisywania kobietom leków przeciwdepresyjnych.
+D) Ujednoliciła wszystkie dawki na receptę niezależnie od płci, by uniknąć pomyłek w aptekach.
+Odpowiedź: B
+
+Pytanie 2:
+Dlaczego współczesna medycyna odchodzi od podejścia „jedna miara dla wszystkich" w kierunku leczenia „szytego na miarę"?
+A) Ponieważ produkcja zindywidualizowanych leków jest znacznie tańsza niż produkcja masowa.
+B) Aby ułatwić pracę aptekarzom podczas wydawania leków bez recepty.
+C) Aby skutecznie zapobiegać występowaniu skutków ubocznych i jednocześnie zwiększyć skuteczność samej terapii u konkretnego pacjenta.
+D) Żeby zapobiegać zbyt szybkiemu metabolizmowi leków u mężczyzn.
+Odpowiedź: C
+
+Pytanie 3:
+Przepisując leki kobiecie, lekarz musi pamiętać, że w odniesieniu do enzymu CYP3A4 w wątrobie:
+A) Kobieca wątroba nie posiada tego enzymu, więc leki trzeba podawać dożylnie.
+B) Wskaźnik masy ciała (BMI) u kobiet całkowicie blokuje działanie wątroby.
+C) Zbyt duża ilość tkanki tłuszczowej trwale dezaktywuje enzymy wątrobowe.
+D) Tabletki antykoncepcyjne lub naturalne wahania hormonów (estrogenów i progesteronu) mogą hamować lub przyspieszać aktywność tego enzymu.
+Odpowiedź: D
+
+Pytanie 4:
+Z jakiego powodu leki o charakterze słabych kwasów wchłaniają się z żołądka do krwi gorzej u kobiet niż u mężczyzn?
+A) Ściany żołądka u kobiet są grubsze, co tworzy barierę mechaniczną dla kwasów.
+B) Żołądek kobiety wydziela mniej soków trawiennych, co tworzy w nim bardziej zasadowe (mniej kwaśne) środowisko.
+C) Kobiece enzymy całkowicie i natychmiastowo neutralizują kwasy już w przełyku.
+D) Ponieważ kobiecy żołądek dużo szybciej opróżnia się z treści pokarmowej, nie dając lekom czasu na wchłonięcie.
+Odpowiedź: B
+
+Pytanie 5:
+Zjawisko "utknięcia" leków lipofilowych i powolnego wyciekania ich do krwi wynika u kobiet z:
+A) Mniejszego wydzielania soków żołądkowych.
+B) Wolniejszego filtrowania krwi przez nerki (o około 10%).
+C) Większego naturalnego procentu tkanki tłuszczowej, która działa jak gąbka dla tych specyficznych leków.
+D) Słabego działania enzymów wątrobowych, które nie radzą sobie z rozkładem tłuszczu.
+Odpowiedź: C

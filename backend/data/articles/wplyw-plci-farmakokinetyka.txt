@@ -1,0 +1,60 @@
+---
+title: "Mężczyźni z Marsa, kobiety z Wenus... a leki z apteki. Dlaczego płeć ma znaczenie przy łykaniu tabletek?"
+author_first_name: Maria
+author_last_name: Kaczmarek
+specialization: Farmakologia
+published_at: 2025-03-01
+source_url: http://media.statsoft.nazwa.pl/_old_dnn/downloads/wplyw_plci.pdf
+quiz_slug: quiz-wplyw-plci-farmakokinetyka
+for_women: true
+znany_lekarz_url:
+location: Gdańsk
+---
+
+Mężczyźni z Marsa, kobiety z Wenus... a leki z apteki. Dlaczego płeć ma znaczenie przy łykaniu tabletek?
+
+
+Wyobraź sobie, że dwójka znajomych – kobieta i mężczyzna – dostaje od lekarza dokładnie tę samą dawkę tego samego leku. Oboje są w podobnym wieku, podobnie się odżywiają i prowadzą zbliżony tryb życia. Mogłoby się wydawać, że tabletka zadziała na nich identycznie. Tymczasem badania naukowe bezlitośnie udowadniają, że to mit. Nasze organizmy to zupełnie inne „laboratoria chemiczne", a płeć to jeden z najważniejszych czynników decydujących o tym, co dzieje się z lekiem po jego połknięciu.
+
+
+Wstęp: Dlaczego w ogóle naukowcy musieli się za to zabrać?
+Historia badań nad lekami ma pewien mroczny sekret. Początkowo kobiety były po prostu wykluczane z pierwszych faz badań klinicznych. Naukowcy bali się o ich zdrowie, a także o ewentualny, toksyczny wpływ testowanych substancji na płód. Skutek był jednak taki, że przez dekady ustalano to, jak dawkować leki i jak one działają, badając w większości... organizmy męskie.
+
+Kiedy w literaturze naukowej zaczęło pojawiać się coraz więcej dowodów na to, że płeć diametralnie zmienia sposób działania leków, amerykańska Agencja ds. Żywności i Leków (FDA) w 1993 roku uderzyła pięścią w stół. Wymusiła ona włączenie kobiet do badań klinicznych, a w 1998 roku wprost zapowiedziała, że nie zarejestruje żadnego nowego leku, jeśli w testach nie wezmą udziału obie płcie.
+
+
+Metody i Wyniki, czyli wielka podróż tabletki krok po kroku
+
+Z naukowego punktu widzenia, losy leku w ciele to tzw. farmakokinetyka. Składa się ona z czterech kluczowych etapów (wchłanianie, rozmieszczanie, przetwarzanie i wydalanie). Na każdym z nich organizm kobiety i mężczyzny traktuje tabletkę inaczej.
+
+1. Wchłanianie (Z żołądka do krwi)
+Zaczynamy od połknięcia tabletki. Okazuje się, że żołądki kobiet wydzielają mniej soków trawiennych, przez co panuje w nich bardziej zasadowe (mniej kwaśne) środowisko. Przez to niektóre leki (te o charakterze słabych kwasów) wchłaniają się u kobiet gorzej, a inne (o charakterze słabych zasad, np. leki przeciwdepresyjne) – znacznie lepiej. Co więcej, u kobiet żołądek wolniej opróżnia się z treści pokarmowej, co opóźnia dotarcie leku do jelit (gdzie odbywa się główne wchłanianie).
+
+2. Dystrybucja (Rozmieszczanie po ciele)
+Kiedy lek dostanie się już do krwi, musi zostać rozprowadzony po organizmie. Kobiety zazwyczaj ważą mniej od mężczyzn, ale naturalnie posiadają większy procent tkanki tłuszczowej. Tkanka ta zachowuje się jak gąbka dla niektórych leków (tzw. leków lipofilowych). Leki te mogą „utknąć" w tłuszczu, obniżając początkowo swoje stężenie we krwi, po czym powoli z niego wyciekać, sztucznie podtrzymując to stężenie w dłuższym czasie.
+
+3. Metabolizm (Przetwarzanie w wątrobie)
+Wątroba to fabryka, która próbuje przerobić lek na taką formę, którą da się łatwo usunąć. Używa do tego specjalnych enzymów (tzw. cytochrom P450). Jeden z nich (CYP3A4) odpowiada za przerób ponad połowy znanych leków. Co ciekawe, enzymy te reagują na hormony – estrogeny i progesteron mogą spowalniać lub przyspieszać ich działanie. Dowiedziono też, że tabletki antykoncepcyjne mogą hamować aktywność tego enzymu.
+
+4. Wydalanie (Sprzątanie przez nerki)
+Ostatni etap to wyrzucenie resztek leku, głównie z moczem. U kobiet szybkość filtrowania krwi przez nerki jest z reguły o około 10% niższa niż u mężczyzn. Skutek? Leki wolniej opuszczają kobiecy organizm, co może prowadzić do tego, że osiągają one we krwi wyższe stężenia niż u panów.
+
+
+Dowód w praktyce: Studium przypadku imipraminy
+
+Autorzy badania postanowili sprawdzić to na własne oczy. Podali 20 zdrowym ochotnikom (10 kobietom i 10 mężczyznom) lek o nazwie imipramina (lek przeciwdepresyjny, preparat Tofranil).
+Wyniki wyciągnięte "z piekarnika" (czyli dane po zbadaniu krwi) były jednoznaczne. Wykorzystując zaawansowaną matematykę (analizę skupień i składowych głównych) badacze udowodnili, że w organizmach kobiet lek ten utrzymywał się w zdecydowanie wyższym stężeniu. Co ciekawe, na te ogromne różnice między płciami nie miał większego wpływu wiek badanych, ani wskaźnik ich masy ciała (BMI). Płeć sama w sobie była czynnikiem, który decydował o zachowaniu leku.
+
+
+Dyskusja i Wnioski: Co z tego wynika?
+Podsumowując analizę wielu różnych farmaceutyków, naukowcy stworzyli praktyczną ściągawkę pokazującą siłę interakcji między płcią a działaniem leku.
+Oto co nam z tego wyszło:
+- Leki silnie zależne od płci (tutaj płeć robi ogromną różnicę): antybiotyki (ofloksacyna, cyprofloksacyna) oraz leki przeciwdepresyjne (imipramina).
+- Leki słabo zależne od płci: metoklopramid, gemfibrozyl, piracetam, karbamazepina, glibenklamid.
+- Leki, na które płeć nie wpływa: m.in. leki na nadciśnienie (hydrochlorotiazyd), serce (mononitrat izosorbitolu) czy przeciwbólowe (diklofenak).
+
+Dzięki takim analizom dzisiejsza medycyna odchodzi od podejścia „jedna miara dla wszystkich". Leczenie staje się coraz bardziej "szyte na miarę", a to oznacza mniej skutków ubocznych i większą skuteczność.
+
+
+
+Konieczna L., Lamparczyk H., Wpływ płci na farmakokinetykę wybranych leków. W: Zastosowania metod statystycznych w badaniach naukowych III. StatSoft Polska

@@ -1,0 +1,14 @@
+---
+article_slug: bol-krzyz-ruch-sprzymierzeniec
+source_url: https://www.cochranelibrary.com/cdsr/doi/10.1002/14651858.CD009790.pub2/full
+---
+
+Hayden et al., 2021 — Exercise therapy for chronic low back pain
+
+Przegląd Cochrane o tym, że ćwiczenia pomagają przy przewlekłym bólu dolnego odcinka pleców.
+
+Pełna nazwa badania: Exercise therapy for chronic low back pain, Cochrane Database of Systematic Reviews, 2021.
+Link do badania: https://pubmed.ncbi.nlm.nih.gov/34580864/
+Link do pełnego tekstu Cochrane: https://www.cochranelibrary.com/cdsr/doi/10.1002/14651858.CD009790.pub2/full
+
+Badanie analizowało skuteczność terapii ruchem u osób z przewlekłym bólem dolnego odcinka pleców. Ćwiczenia okazały się zwykle lepsze niż brak leczenia, zwykła opieka lub bierne czekanie. Badanie wspiera podejście stopniowe: dobrać ruch do możliwości, zacząć od małych dawek i zwiększać je wtedy, gdy ciało dobrze reaguje. Całkowity bezruch rzadko jest najlepszą strategią przy bólu krzyża.

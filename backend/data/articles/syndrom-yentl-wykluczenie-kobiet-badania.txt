@@ -1,0 +1,77 @@
+---
+title: 'Syndrom Yentl, histeria i medyczny „mit urody" - Dlaczego współczesna medycyna wciąż nie rozumie kobiet?'
+author_first_name: Aleksandra
+author_last_name: Nowak
+specialization: Ginekologia
+published_at: 2025-03-01
+source_url: https://pmc.ncbi.nlm.nih.gov/articles/PMC8812498/
+quiz_slug:
+for_women: true
+znany_lekarz_url:
+location: Gdańsk
+---
+
+Syndrom Yentl, histeria i medyczny „mit urody": Dlaczego współczesna medycyna wciąż nie rozumie kobiet?
+
+
+
+Wyobraź sobie, że idziesz do krawca, który całe życie szył garnitury wyłącznie dla mężczyzn, i prosisz go o idealnie dopasowaną suknię, ale on z uporem maniaka próbuje zdjąć z Ciebie miarę według męskiego szablonu. Brzmi absurdalnie? Niestety, przez dekady tak właśnie działała medycyna.
+
+Historycznie badania medyczne wykluczały z udziału kobiety, a dane zbierane od mężczyzn były po prostu uogólniane na całą populację, w tym na kobiety i osoby interpłciowe. Wynikało to z kilku powodów: obaw o wpływ eksperymentalnych leków na płodność i ewentualną ciążę, uprzedzeń w zdominowanym przez mężczyzn świecie nauki, a także z wygodnego – choć błędnego – założenia, że męskie ciało jest „normą" i domyślnym reprezentantem ludzkiego gatunku.
+
+Choć kobiety stanowią ponad 50% globalnej populacji, współczesny przegląd 17 artykułów naukowych z lat 2009–2019 obnaża brutalną prawdę: luka płciowa w badaniach medycznych wciąż ma się świetnie, a w gabinetach lekarskich nierzadko pokutuje szkodliwa mizoginia.
+
+
+Syndrom Yentl: Musisz udowodnić, że jesteś „mężczyzną", by Cię leczono
+
+To zjawisko doczekało się nawet swojej nazwy. Dr Bernadette Healy ukuła termin „Syndrom Yentl" (nawiązując do XIX-wiecznego opowiadania Isaaca Bashevisa Singera). Syndrom ten opisuje ponurą rzeczywistość, w której kobieta, aby jej choroba została potraktowana z pełną powagą przez personel medyczny, musi udowodnić, że jest chora w taki sam sposób, jak chory byłby mężczyzna.
+
+Konsekwencje tego zjawiska są śmiertelnie niebezpieczne. Klasycznym przykładem są zawały serca (ostry zawał mięśnia sercowego). Badania dowodzą, że kobiety z zawałem mają często inne objawy niż mężczyźni. Ponieważ ich objawy nie pasują do „męskiego wzorca", rzadziej kieruje się je na specjalistyczne badania, takie jak angiografia, a w efekcie są rzadziej leczone w odpowiedni sposób. Skutek? Sześć miesięcy po zawale to właśnie pacjentki (szczególnie te młodsze) częściej padają ofiarą poważnych powikłań i wyższej ogólnej śmiertelności.
+
+Niestety problem ten zaczyna się już na etapie rekrutacji do badań naukowych. W przeglądzie 156 badań klinicznych dotyczących zapobiegania chorobom układu krążenia odkryto, że aż 20 z nich zrekrutowało wyłącznie mężczyzn, a tylko 1 – wyłącznie kobiety. Co gorsza, odsetek kobiet w badaniach, na podstawie których tworzy się oficjalne wytyczne zapobiegania chorobom serca, wyniósł zaledwie 30%.
+
+
+Problem zaczyna się w laboratorium
+
+Zanim jakikolwiek lek trafi do ludzi, testuje się go na komórkach i zwierzętach. I tu pojawia się kolejny problem: androcentryczność (skupienie na męskości) panuje już pod mikroskopem.
+
+W analizie podstawowych badań dermatologicznych (dotyczących skóry) okazało się, że aż w 60% przypadków naukowcy w ogóle nie podali informacji, jakiej płci były komórki ludzi lub zwierząt, nad którymi pracowali.
+
+Z kolei tam, gdzie płeć została zadeklarowana, aż w 70% przypadków były to próbki pochodzenia męskiego.
+
+Nawet w badaniach klinicznych na ludziach ignoruje się różnice płciowe. W analizie 100 badań kanadyjskich naukowcy odkryli, że zaledwie w 6% przypadków przeprowadzono analizę wyników w podgrupach ze względu na płeć.
+
+Naukowcy często rekrutują pacjentów na podstawie przestarzałych stereotypów o tym, kogo dotyka dana choroba. Przykładowo, dnę moczanową postrzega się głównie jako męską dolegliwość. W rzeczywistości kobiety stanowią aż 30% chorych na dnę, jednak w klinicznych badaniach nad lekami na tę chorobę ich udział wynosi żenujące 5,3%. Co ciekawe, problemem nie jest niechęć samych kobiet – inne badania potwierdziły, że kobiety równie chętnie zgłaszają się do testów klinicznych; winne są same projekty badań i błędy w rekrutacji.
+
+
+Łatka „histeryczki" i 4,4 roku czekania na diagnozę
+
+Historycznie androcentryczne podejście w medycynie dyskryminowało pacjentki. Kiedyś prowadziło do absurdalnych diagnoz „histerii" i barbarzyńskich terapii (jak klitoridektomia czy wymuszone leżenie w łóżku), a dziś skutkuje bagatelizowaniem bólu. Słowa takie jak „szalona" czy „wymagająca" są często używane do opisywania „trudnych" pacjentek, których organizmy nie reagują na leczenie lub diagnozę zgodnie z (męskimi) oczekiwaniami.
+
+Świetnym przykładem jest endometrioza. Ból i doświadczenia pacjentek z tą chorobą są regularnie zbywane przez lekarzy jako problemy o podłożu czysto psychologicznym. W efekcie średni czas oczekiwania na diagnozę endometriozy w Stanach Zjednoczonych od pierwszej wizyty u lekarza wynosi aż 4,4 roku.
+
+Jak to możliwe, że młodzi lekarze powielają te schematy? Winny jest tzw. „ukryty program nauczania" na uczelniach medycznych. To zjawisko polega na przejmowaniu przez studentów nieformalnych postaw i wartości od starszych klinicystów. Przekonanie, że pacjentki, które nie pasują do podręcznikowego (męskiego) wzorca są po prostu „marudne" lub „szalone", jest nieformalnie przekazywane z pokolenia na pokolenie, podtrzymując ten szkodliwy cykl.
+
+
+Medyczny „mit urody", czyli mizoginia w publikacjach
+
+Najbardziej szokującym aspektem analizy współczesnej literatury medycznej było wyłonienie 5 badań, które pod przykrywką nauki skupiały się na ocenie fizycznej atrakcyjności kobiet. To bezpośrednie ucieleśnienie tzw. „mitu urody" – zjawiska opisanego przez feministyczną pisarkę Naomi Wolf, w którym zachowanie rzekomego piękna staje się narzędziem ucisku i bronią polityczną przeciwko kobietom.
+
+
+Oto jak mizoginia przedostawała się do oficjalnych czasopism naukowych:
+
+Ocena pacjentek przez ginekologów: W jednym z badań Vercellini i wsp. poproszono czterech lekarzy o subiektywną ocenę „atrakcyjności" kobiet poddawanych operacji z powodu endometriozy przy użyciu punktowej skali. Lekarze mierzyli m.in. stosunek obwodu piersi do klatki piersiowej. We wnioskach stwierdzono, że kobiety z najcięższą postacią endometriozy były szczuplejsze, miały większe piersi i były oceniane jako atrakcyjniejsze. Publikacja ta wywołała ogromne oburzenie na całym świecie.
+
+Twarz a zdrowie: Trzy inne badania próbowały udowodnić korelację między atrakcyjnością a zdrowiem, np. oceniając „atrakcyjny poziom tkanki tłuszczowej na twarzy" lub twierdząc, że bardziej atrakcyjne i kobiece twarze świadczą o mniejszej liczbie przebytych infekcji górnych dróg oddechowych.
+Wpływ dzieci na piękno: W innym badaniu (Marcinkowska i wsp.) oceniano twarze 30 kobiet, dochodząc do wniosku, że te, które urodziły mniej dzieci, są postrzegane jako atrakcyjniejsze i zdrowiej wyglądające.
+
+Śledzenie wzroku na piersiach: Zespół Pietruski i wsp. wykorzystał technologię eye-trackingu, by analizować wzrokową percepcję estetyki kobiecych piersi. Sami autorzy przyznali jednak, że nie wiedzą, jak czas wpatrywania się w dany punkt przekłada się na faktyczną ocenę atrakcyjności, co stawia pod znakiem zapytania sens całego eksperymentu.
+
+
+Takie badania nie służą poprawie opieki klinicznej nad pacjentkami. Zamiast tego wzmacniają stereotypy, utrwalają historyczne skupienie medycyny na kobiecej płodności i wyglądzie zewnętrznym, a co najgorsze – niszczą relację na linii pacjent-lekarz. Ocenianie atrakcyjności pacjenta przez lekarza jest naruszeniem Przysięgi Hipokratesa i granic profesjonalizmu. Wielu pacjentkom towarzyszy uzasadniona nieufność wobec środowiska medycznego, wynikająca z obawy, że ich fizyczny ból zostanie uciszony łatkami oznaczającymi „lęk" czy „depresję".
+
+Póki medycyna stanowczo nie odetnie się od androcentryzmu i mizoginistycznych wtrętów w literaturze naukowej, zdrowie kobiet będzie traktowane po macoszemu, a rachunek za te błędy – w postaci nietrafionych diagnoz, skutków ubocznych leków i straconego czasu – zapłacą same pacjentki.
+
+
+
+Merone, L., Tsey, K., Russell, D., Nagle, C. (2022). Sex Inequalities in Medical Research: A Systematic Scoping Review of the Literature. Women's Health Report

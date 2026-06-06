@@ -32,4 +32,4 @@ else
     echo "[entrypoint] Database already initialized ($ARTICLE_COUNT articles) — skipping."
 fi
 
-exec uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+exec uvicorn main:app --host 0.0.0.0 --port "${PORT:-8000}"
